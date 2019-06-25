@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import { connect } from 'react-redux';
 import { fetchCategoryAll } from "../../store/actions/categories";
 import { makeStyles } from '@material-ui/core/styles';
@@ -8,6 +8,7 @@ import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import TableList from "../../components/Table";
 import { getCategoriesSelector } from "../../store/selectors";
+import Modal from '../../components/Modal';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -15,11 +16,26 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
+const modalReducer = (state, action) => {
+  switch (action.type) {
+    case 'open':
+      return { open: true, effect: action.effect };
+    case 'close':
+      return { open: false, effect: undefined };
+    default:
+      throw new Error();
+  }
+};
+
 const Categories = (props) => {
   const { fetchCategoryAll, categories, isLoading } = props;
   const classes = useStyles();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [modalOptions, dispatchModalOptions] = useReducer(modalReducer, {
+    open: false,
+    type: undefined
+  });
 
   useEffect(() => {
     document.title = 'Categories page';
@@ -37,7 +53,7 @@ const Categories = (props) => {
             Actions
           </Typography>
           <ButtonGroup fullWidth color={'primary'}>
-            <Button>
+            <Button onClick={() => dispatchModalOptions({ type: 'open', effect: 'add' })}>
               Add item
             </Button>
           </ButtonGroup>
@@ -54,6 +70,8 @@ const Categories = (props) => {
                      isLoading={isLoading}/>
         </Grid>
       </Grid>
+      <Modal modalHandler={dispatchModalOptions}
+             modalOptions={modalOptions}/>
     </div>
   );
 };
