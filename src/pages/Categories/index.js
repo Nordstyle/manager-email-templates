@@ -4,6 +4,7 @@ import Grid from '@material-ui/core/Grid';
 import {Typography} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
+import TableList from "../../components/Table";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -30,7 +31,7 @@ const Categories = (props) => {
           <Typography variant={'h6'}>
             List of Categories
           </Typography>
-          <div> table </div>
+          <TableList />
         </Grid>
       </Grid>
     </div>
