@@ -1,4 +1,4 @@
-const ENDPOINT = 'https://simple-api.sandbox.movavi.com/api/v1/';
+const ENDPOINT = '/api/v1/';
 
 const getJSON = (url, init) => fetch(url, init)
   .then(resp => {
