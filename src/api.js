@@ -14,14 +14,14 @@ const queryOptions = {
 
 const API = {
   categories: {
-    read: ({ page, rowsPerPage, condition }) => {
+    read: ({ page, rowsPerPage, conditions }) => {
       return getJSON(ENDPOINT, {
         ...queryOptions,
         body: JSON.stringify({
           jsonrpc: '2.0',
           method: 'readCategory',
           params: {
-            conditions: condition ? condition : ['id', 'IS NOT NULL'],
+            conditions: conditions ? conditions : ['id', 'IS NOT NULL'],
             perPage: rowsPerPage,
             page: page + 1
           }
@@ -39,6 +39,34 @@ const API = {
               title,
               parent: parent ? { id: parent } : null
             }
+          }
+        })
+      })
+    },
+    update: ({ id, title, parent, conditions }) => {
+      return getJSON(ENDPOINT, {
+        ...queryOptions,
+        body: JSON.stringify({
+          jsonrpc: '2.0',
+          method: 'updateCategory',
+          params: {
+            conditions: conditions ? conditions : ['id', '=', id],
+            data: {
+              title,
+              parent: parent ? { id: parent } : null
+            }
+          }
+        })
+      })
+    },
+    delete: ({ id, conditions }) => {
+      return getJSON(ENDPOINT, {
+        ...queryOptions,
+        body: JSON.stringify({
+          jsonrpc: '2.0',
+          method: 'deleteCategory',
+          params: {
+            conditions: conditions ? conditions : ['id', '=', id]
           }
         })
       })
