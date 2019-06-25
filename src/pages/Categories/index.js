@@ -27,7 +27,7 @@ const Categories = (props) => {
     return () => {
       document.title = 'Email Templates Manager';
     }
-  }, [page, rowsPerPage]);
+  }, [page, rowsPerPage, fetchCategoryAll]);
 
   return (
     <div className={classes.root}>
