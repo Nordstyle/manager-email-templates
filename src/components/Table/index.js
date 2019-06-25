@@ -33,7 +33,17 @@ const useStyles = makeStyles(theme => ({
 
 const TableList = (props) => {
 	/* TODO: refactor datadatadata */
-	const { page, setPage, data:{data:{data}}, rowsPerPage, setRowsPerPage, isLoading } = props;
+	const {
+		page,
+		setPage,
+		data: {
+			data: { data }
+		},
+		rowsPerPage,
+		setRowsPerPage,
+		isLoading,
+		modalHandler
+	} = props;
 	const totalCount = props.data.data.count;
 
 	const classes = useStyles();
@@ -63,14 +73,18 @@ const TableList = (props) => {
 									<CircularProgress/>
 								</TableCell>
 							</TableRow>)
-						: data && data.map(item => (
-							<TableRow hover key={item.id}>
+						: data && data.map(item => {
+							const { id, parent, title } = item;
+							return (
+							<TableRow onClick={() => modalHandler({type: 'open', effect: 'actions', payload: { id, parent, title }})}
+												hover
+												key={id}>
 								<TableCell component="th" scope="row">
-									{item.id}
+									{id}
 								</TableCell>
-								<TableCell>{item.title}</TableCell>
+								<TableCell>{title}</TableCell>
 							</TableRow>
-						))}
+						)})}
 					</TableBody>
 					{ !isLoading && data && (
 						<TableFooter>

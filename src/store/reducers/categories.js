@@ -2,7 +2,8 @@ import {
   CATEGORY_FETCH_READ,
   CATEGORY_FETCH_READ_FAILED,
   CATEGORY_FETCH_READ_SUCCESS,
-  CATEGORY_CREATE_SUCCESS
+  CATEGORY_CREATE_SUCCESS,
+  CATEGORY_DELETE_SUCCESS
 } from "../constants";
 
 export const categories = (
@@ -18,9 +19,13 @@ export const categories = (
       return { isLoading: false, isError: true, data: action.payload };
     case CATEGORY_CREATE_SUCCESS:
       return {
-        isLoading: false,
-        isError: true,
+        ...state,
         data: { ...state.data, data: [...state.data.data, action.payload] }
+      };
+    case CATEGORY_DELETE_SUCCESS:
+      return {
+        ...state,
+        data: { ...state.data, data: state.data.data.filter(item => item.id !== action.payload)}
       };
     default:
       return state;

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useReducer } from 'react';
 import { connect } from 'react-redux';
-import { fetchCategoryAll, categoryCreate } from "../../store/actions/categories";
+import { fetchCategoryAll, categoryCreate, categoryDelete } from "../../store/actions/categories";
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import {Typography} from "@material-ui/core";
@@ -19,16 +19,16 @@ const useStyles = makeStyles(() => ({
 const modalReducer = (state, action) => {
   switch (action.type) {
     case 'open':
-      return { open: true, effect: action.effect };
+      return { open: true, effect: action.effect, payload: action.payload };
     case 'close':
-      return { open: false, effect: undefined };
+      return { open: false, effect: undefined, payload: undefined };
     default:
       throw new Error();
   }
 };
 
 const Categories = (props) => {
-  const { fetchCategoryAll, categories, isLoading, categoryCreate } = props;
+  const { fetchCategoryAll, categories, isLoading, categoryCreate, categoryDelete } = props;
   const classes = useStyles();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -45,8 +45,14 @@ const Categories = (props) => {
     }
   }, [page, rowsPerPage, fetchCategoryAll]);
 
+
+  /* METHODS */
   const addCategory = (params) => {
     categoryCreate(params);
+  };
+
+  const deleteCategory = (params) => {
+    categoryDelete(params);
   };
 
   return (
@@ -71,17 +77,19 @@ const Categories = (props) => {
                      data={categories}
                      rowsPerPage={rowsPerPage}
                      setRowsPerPage={setRowsPerPage}
-                     isLoading={isLoading}/>
+                     isLoading={isLoading}
+                     modalHandler={dispatchModalOptions}/>
         </Grid>
       </Grid>
       <Modal modalHandler={dispatchModalOptions}
              modalOptions={modalOptions}
-             addMethod={addCategory}/>
+             addMethod={addCategory}
+             deleteMethod={deleteCategory}/>
     </div>
   );
 };
 
 export default connect(
   store => ({ categories: getCategoriesSelector(store), isLoading: store.categories.isLoading }),
-  { fetchCategoryAll, categoryCreate }
+  { fetchCategoryAll, categoryCreate, categoryDelete }
 )(Categories);

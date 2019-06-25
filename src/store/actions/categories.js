@@ -4,7 +4,10 @@ import {
 	CATEGORY_FETCH_READ_SUCCESS,
 	CATEGORY_CREATE_FAILED,
 	CATEGORY_CREATE_INIT,
-	CATEGORY_CREATE_SUCCESS
+	CATEGORY_CREATE_SUCCESS,
+	CATEGORY_DELETE_FAILED,
+	CATEGORY_DELETE_INIT,
+	CATEGORY_DELETE_SUCCESS
 } from '../constants'
 
 import API from '../../api';
@@ -60,6 +63,33 @@ export const categoryCreate = (params) => dispatch => {
 		},
 		error => {
 			dispatch(categoryCreateFailed(error));
+		}
+	);
+};
+
+/* DELETE */
+const categoryDeleteInit = () => ({
+	type: CATEGORY_DELETE_INIT
+});
+
+const categoryDeleteSuccess = (id) => ({
+	type: CATEGORY_DELETE_SUCCESS,
+	payload: id
+});
+
+const categoryDeleteFailed = () => ({
+	type: CATEGORY_DELETE_FAILED
+});
+
+export const categoryDelete = (params) => dispatch => {
+	dispatch(categoryDeleteInit());
+
+	return API.categories.delete(params).then(
+		() => {
+			dispatch(categoryDeleteSuccess(params.id));
+		},
+		error => {
+			dispatch(categoryDeleteFailed(error));
 		}
 	);
 };
