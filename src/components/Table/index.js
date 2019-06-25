@@ -7,70 +7,9 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import TablePagination from "@material-ui/core/TablePagination";
-import IconButton from '@material-ui/core/IconButton';
-import FirstPageIcon from '@material-ui/icons/FirstPage';
-import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
-import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
-import LastPageIcon from '@material-ui/icons/LastPage';
 import TableFooter from "@material-ui/core/TableFooter";
-
-const useStyles1 = makeStyles(theme => ({
-	root: {
-		flexShrink: 0,
-		color: theme.palette.text.secondary,
-		marginLeft: theme.spacing(2.5),
-	},
-}));
-
-function TablePaginationActions(props) {
-	const classes = useStyles1();
-	const { count, page, rowsPerPage, onChangePage } = props;
-
-	function handleFirstPageButtonClick(event) {
-		onChangePage(event, 0);
-	}
-
-	function handleBackButtonClick(event) {
-		onChangePage(event, page - 1);
-	}
-
-	function handleNextButtonClick(event) {
-		onChangePage(event, page + 1);
-	}
-
-	function handleLastPageButtonClick(event) {
-		onChangePage(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
-	}
-
-	return (
-		<div className={classes.root}>
-			<IconButton
-				onClick={handleFirstPageButtonClick}
-				disabled={page === 0}
-				aria-label="First Page"
-			>
-				<FirstPageIcon />
-			</IconButton>
-			<IconButton onClick={handleBackButtonClick} disabled={page === 0} aria-label="Previous Page">
-				<KeyboardArrowLeft />
-			</IconButton>
-			<IconButton
-				onClick={handleNextButtonClick}
-				disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-				aria-label="Next Page"
-			>
-				<KeyboardArrowRight />
-			</IconButton>
-			<IconButton
-				onClick={handleLastPageButtonClick}
-				disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-				aria-label="Last Page"
-			>
-				<LastPageIcon />
-			</IconButton>
-		</div>
-	);
-}
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { TablePaginationActions } from './TablePagination';
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -85,32 +24,27 @@ const useStyles = makeStyles(theme => ({
 	table: {
 		minWidth: 650,
 	},
+	loader: {
+		width: '100%',
+		textAlign: 'center',
+		padding: '20px'
+	}
 }));
 
-function createData(name, calories, fat, carbs, protein) {
-	return { name, calories, fat, carbs, protein };
-}
+const TableList = (props) => {
+	/* TODO: refactor datadatadata */
+	const { page, setPage, data:{data:{data}}, rowsPerPage, setRowsPerPage, isLoading } = props;
+	const totalCount = props.data.data.count;
 
-const rows = [
-	createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-	createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-	createData('Eclair', 262, 16.0, 24, 6.0),
-	createData('Cupcake', 305, 3.7, 67, 4.3),
-	createData('Gingerbread', 356, 16.0, 49, 3.9),
-	createData('Cupcake', 305, 3.7, 67, 4.3),
-	createData('Gingerbread', 356, 16.0, 49, 3.9),
-	createData('Cupcake', 305, 3.7, 67, 4.3),
-	createData('Gingerbread', 356, 16.0, 49, 3.9),
-	createData('Cupcake', 305, 3.7, 67, 4.3),
-];
-
-const TableList = () => {
 	const classes = useStyles();
-	const [page, setPage] = React.useState(0);
 
-	function handleChangePage(event, newPage) {
+	const handleChangePage = (event, newPage) => {
 		setPage(newPage);
-	}
+	};
+
+	const handleChangeRowsPerPage = (event) => {
+		setRowsPerPage(parseInt(event.target.value, 10));
+	};
 
 	return (
 		<div className={classes.root}>
@@ -123,29 +57,41 @@ const TableList = () => {
 						</TableRow>
 					</TableHead>
 					<TableBody>
-						{rows.map(row => (
-							<TableRow hover key={row.name}>
-								<TableCell component="th" scope="row">
-									{row.name}
+						{isLoading ?
+							(<TableRow>
+								<TableCell className={classes.loader} component="th" scope="row">
+									<CircularProgress/>
 								</TableCell>
-								<TableCell>{row.calories}</TableCell>
+							</TableRow>)
+						: data && data.map(item => (
+							<TableRow hover key={item.id}>
+								<TableCell component="th" scope="row">
+									{item.id}
+								</TableCell>
+								<TableCell>{item.title}</TableCell>
 							</TableRow>
 						))}
 					</TableBody>
-					<TableFooter>
-						<TableRow>
-							<TablePagination
-								colSpan={3}
-								count={rows.length}
-								page={page}
-								SelectProps={{
-									native: true,
-								}}
-								onChangePage={handleChangePage}
-								ActionsComponent={TablePaginationActions}
-							/>
-						</TableRow>
-					</TableFooter>
+					{ !isLoading && data && (
+						<TableFooter>
+							<TableRow>
+								<TablePagination
+									rowsPerPageOptions={[5, 10, 25]}
+									colSpan={3}
+									count={totalCount}
+									rowsPerPage={rowsPerPage}
+									page={page}
+									SelectProps={{
+										inputProps: { 'aria-label': 'Rows per page' },
+										native: true
+									}}
+									onChangePage={handleChangePage}
+									onChangeRowsPerPage={handleChangeRowsPerPage}
+									ActionsComponent={TablePaginationActions}
+								/>
+							</TableRow>
+						</TableFooter>
+					)}
 				</Table>
 			</Paper>
 		</div>
