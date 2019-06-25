@@ -1,29 +1,29 @@
 import {
-	CATEGORY_FETCH_ALL,
-	CATEGORY_FETCH_ALL_FAILED,
-	CATEGORY_FETCH_ALL_SUCCESS
+	CATEGORY_FETCH_READ,
+	CATEGORY_FETCH_READ_FAILED,
+	CATEGORY_FETCH_READ_SUCCESS
 } from '../constants'
 
 import API from '../../api';
 
 /* FETCH ALL */
 const fetchCategoryAllInit = () => ({
-	type: CATEGORY_FETCH_ALL
+	type: CATEGORY_FETCH_READ
 });
 
 const fetchCategoryAllSuccess = (data) => ({
-	type: CATEGORY_FETCH_ALL_FAILED,
+	type: CATEGORY_FETCH_READ_FAILED,
 	payload: data
 });
 
 const fetchCategoryAllFailed = () => ({
-	type: CATEGORY_FETCH_ALL_SUCCESS
+	type: CATEGORY_FETCH_READ_SUCCESS
 });
 
 export const fetchCategoryAll = (params) => dispatch => {
 	dispatch(fetchCategoryAllInit());
 
-	return API.categories.all(params).then(
+	return API.categories.read(params).then(
 		response => {
 			dispatch(fetchCategoryAllSuccess(response.result));
 		},

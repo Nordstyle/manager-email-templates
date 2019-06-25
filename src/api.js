@@ -14,14 +14,14 @@ const queryOptions = {
 
 const API = {
   categories: {
-    all: ({ page, rowsPerPage }) => {
+    read: ({ page, rowsPerPage, condition }) => {
       return getJSON(ENDPOINT, {
         ...queryOptions,
         body: JSON.stringify({
           jsonrpc: '2.0',
           method: 'readCategory',
           params: {
-            conditions: ['id', 'IS NOT NULL'],
+            conditions: condition ? condition : ['id', 'IS NOT NULL'],
             perPage: rowsPerPage,
             page: page + 1
           }
