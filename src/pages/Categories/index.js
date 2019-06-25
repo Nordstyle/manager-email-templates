@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useReducer } from 'react';
 import { connect } from 'react-redux';
-import { fetchCategoryAll } from "../../store/actions/categories";
+import { fetchCategoryAll, categoryCreate } from "../../store/actions/categories";
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import {Typography} from "@material-ui/core";
@@ -28,7 +28,7 @@ const modalReducer = (state, action) => {
 };
 
 const Categories = (props) => {
-  const { fetchCategoryAll, categories, isLoading } = props;
+  const { fetchCategoryAll, categories, isLoading, categoryCreate } = props;
   const classes = useStyles();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -44,6 +44,10 @@ const Categories = (props) => {
       document.title = 'Email Templates Manager';
     }
   }, [page, rowsPerPage, fetchCategoryAll]);
+
+  const addCategory = (params) => {
+    categoryCreate(params);
+  };
 
   return (
     <div className={classes.root}>
@@ -71,12 +75,13 @@ const Categories = (props) => {
         </Grid>
       </Grid>
       <Modal modalHandler={dispatchModalOptions}
-             modalOptions={modalOptions}/>
+             modalOptions={modalOptions}
+             addMethod={addCategory}/>
     </div>
   );
 };
 
 export default connect(
   store => ({ categories: getCategoriesSelector(store), isLoading: store.categories.isLoading }),
-  { fetchCategoryAll }
+  { fetchCategoryAll, categoryCreate }
 )(Categories);

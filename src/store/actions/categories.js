@@ -1,7 +1,10 @@
 import {
 	CATEGORY_FETCH_READ,
 	CATEGORY_FETCH_READ_FAILED,
-	CATEGORY_FETCH_READ_SUCCESS
+	CATEGORY_FETCH_READ_SUCCESS,
+	CATEGORY_CREATE_FAILED,
+	CATEGORY_CREATE_INIT,
+	CATEGORY_CREATE_SUCCESS
 } from '../constants'
 
 import API from '../../api';
@@ -29,6 +32,34 @@ export const fetchCategoryAll = (params) => dispatch => {
 		},
 		error => {
 			dispatch(fetchCategoryAllFailed(error));
+		}
+	);
+};
+
+/* CREATE */
+const categoryCreateInit = () => ({
+	type: CATEGORY_CREATE_INIT
+});
+
+const categoryCreateSuccess = (data, title, parent) => ({
+	type: CATEGORY_CREATE_SUCCESS,
+	payload: { id: data['Primary key']['id'], title, parent: parent ? { id: parent } : null }
+});
+
+const categoryCreateFailed = () => ({
+	type: CATEGORY_CREATE_FAILED
+});
+
+export const categoryCreate = (params) => dispatch => {
+	dispatch(categoryCreateInit());
+
+	return API.categories.create(params).then(
+		response => {
+			const { title, parent } = params;
+			dispatch(categoryCreateSuccess(response.result, title, parent));
+		},
+		error => {
+			dispatch(categoryCreateFailed(error));
 		}
 	);
 };

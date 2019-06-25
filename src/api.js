@@ -27,6 +27,21 @@ const API = {
           }
         })
       })
+    },
+    create: ({ title, parent }) => {
+      return getJSON(ENDPOINT, {
+        ...queryOptions,
+        body: JSON.stringify({
+          jsonrpc: '2.0',
+          method: 'createCategory',
+          params: {
+            data: {
+              title,
+              parent: parent ? { id: parent } : null
+            }
+          }
+        })
+      })
     }
   }
 };
