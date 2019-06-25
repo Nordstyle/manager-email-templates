@@ -9,12 +9,12 @@ const getJSON = (url, init) => fetch(url, init)
 
 const queryOptions = {
   method: 'POST',
-  headers: { 'Content-Type': 'application/json' }
+  headers: { 'Content-Type': 'application/json' },
 };
 
 const API = {
   categories: {
-    all: (params) => {
+    all: ({ page, rowsPerPage }) => {
       return getJSON(ENDPOINT, {
         ...queryOptions,
         body: JSON.stringify({
@@ -22,7 +22,8 @@ const API = {
           method: 'readCategory',
           params: {
             conditions: ['id', 'IS NOT NULL'],
-            perPage: 100
+            perPage: rowsPerPage,
+            page: page + 1
           }
         })
       })
