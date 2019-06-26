@@ -81,12 +81,14 @@ const TableList = (props) => {
 							</TableRow>)
 						: data && stableSort(data, getSorting(order,orderBy)).map(item => {
 							const { id, parent, title } = item;
+							const parentId = parent ? parent.id : null;
 							return (
 							<TableRow hover key={id}>
 								<TableCell component="th" scope="row">
 									{id}
 								</TableCell>
 								<TableCell>{title}</TableCell>
+								<TableCell>{parentId}</TableCell>
 								<TableCell align={'right'}>
 									<IconButton onClick={() => modalHandler({type: 'open', effect: 'update', payload: { id, parent, title }})}>
 										<Edit/>

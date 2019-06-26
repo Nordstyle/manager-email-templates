@@ -30,6 +30,15 @@ const EnhancedTableHead = (props) => {
 						Title
 					</TableSortLabel>
 				</TableCell>
+				<TableCell>
+					<TableSortLabel
+						active={orderBy === 'parent'}
+						direction={order}
+						onClick={createSortHandler('parent')}
+						sortDirection={orderBy === 'parent' ? order : false}>
+						Parent
+					</TableSortLabel>
+				</TableCell>
 				<TableCell align={'right'}>Actions</TableCell>
 			</TableRow>
 		</TableHead>

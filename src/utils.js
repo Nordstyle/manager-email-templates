@@ -1,8 +1,18 @@
 export const desc = (a, b, orderBy) => {
-	if (b[orderBy] < a[orderBy]) {
+	let firstArg, secondArg, orderArg;
+	if (orderBy === 'parent') {
+		firstArg = a.parent ? [a.parent.id] : [null];
+		secondArg = b.parent ? [b.parent.id] : [null];
+		orderArg = 0;
+	} else {
+		 firstArg = a;
+		 secondArg = b;
+		 orderArg = orderBy;
+	}
+	if (secondArg[orderArg] < firstArg[orderArg]) {
 		return -1;
 	}
-	if (b[orderBy] > a[orderBy]) {
+	if (secondArg[orderArg] > firstArg[orderArg]) {
 		return 1;
 	}
 	return 0;

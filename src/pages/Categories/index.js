@@ -74,7 +74,7 @@ const Categories = (props) => {
           <Typography variant={'h6'}>
             Actions
           </Typography>
-          <ButtonGroup fullWidth color={'primary'}>
+          <ButtonGroup fullWidth size={'small'} color={'primary'}>
             <Button onClick={() => dispatchModalOptions({ type: 'open', effect: 'add' })}>
               Add item
             </Button>
