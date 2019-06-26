@@ -10,15 +10,18 @@ export const createDataCategory = (id, title, parent = null, messages = [], chil
 
 export const desc = (a, b, orderBy) => {
 	let firstArg, secondArg, orderArg;
+
 	if (orderBy === "parent") {
-		firstArg = a.parent ? [a.parent.id] : [null];
-		secondArg = b.parent ? [b.parent.id] : [null];
+		firstArg = a.parent ? [a.parent] : [null];
+		secondArg = b.parent ? [b.parent] : [null];
 		orderArg = 0;
 	} else {
 		firstArg = a;
 		secondArg = b;
 		orderArg = orderBy;
 	}
+
+
 	if (secondArg[orderArg] < firstArg[orderArg]) {
 		return -1;
 	}

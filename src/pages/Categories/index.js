@@ -37,7 +37,7 @@ const rowHeads = [
   {id: 'id', numeric: false, disablePadding: false, label: 'id'},
   {id: 'title', numeric: false, disablePadding: false, label: 'Title'},
   {id: 'parent', numeric: true, disablePadding: false, label: 'Parent ID'},
-  {id: 'count', numeric: true, disablePadding: false, label: 'Messages count'}
+  {id: 'messages', numeric: true, disablePadding: false, label: 'Messages count'}
 ];
 
 
