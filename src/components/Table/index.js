@@ -71,7 +71,6 @@ const TableList = props => {
 	const [openTooltip, setOpenTooltip] = useReducer(tooltipReducer, {
 		openId: undefined
 	});
-	console.log(openTooltip, "opento");
 	const classes = useStyles();
 
 	/* METHODS */
@@ -108,7 +107,7 @@ const TableList = props => {
 							stableSort(data, getSorting(order, orderBy)).map(item => {
 								const { id, parent, title, children, messages } = item;
 								const parentId = parent ? parent.id : null;
-								const hasDeps = !!children.length || !!messages.length;
+								const hasDeps = children || messages ? !!children.length || !!messages.length : null;
 								return (
 									<TableRow hover key={id}>
 										<TableCell component="th" scope="row">

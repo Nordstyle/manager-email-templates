@@ -55,7 +55,7 @@ const API = {
             conditions: conditions ? conditions : ["id", "=", id],
             data: {
               title,
-              parent: parent ? { id: parent } : null
+              parent: parent ? { id: Number(parent) } : null
             }
           }
         })
