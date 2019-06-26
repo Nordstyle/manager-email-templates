@@ -50,7 +50,8 @@ const TableList = (props) => {
 		modalHandler,
 		order,
 		orderBy,
-		handleRequestSort
+		handleRequestSort,
+		deleteMethod
 	} = props;
 	const totalCount = props.data.data.count;
 
@@ -80,8 +81,9 @@ const TableList = (props) => {
 								</TableCell>
 							</TableRow>)
 						: data && stableSort(data, getSorting(order,orderBy)).map(item => {
-							const { id, parent, title } = item;
+							const { id, parent, title, children, messages } = item;
 							const parentId = parent ? parent.id : null;
+							const hasDeps = !!children.length || !!messages.length;
 							return (
 							<TableRow hover key={id}>
 								<TableCell component="th" scope="row">

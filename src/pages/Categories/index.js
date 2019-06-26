@@ -91,6 +91,7 @@ const Categories = (props) => {
                      setRowsPerPage={setRowsPerPage}
                      isLoading={isLoading}
                      modalHandler={dispatchModalOptions}
+                     deleteMethod={deleteCategory}
                      order={order}
                      orderBy={orderBy}
                      handleRequestSort={handleRequestSort}/>
@@ -99,7 +100,6 @@ const Categories = (props) => {
       <Modal modalHandler={dispatchModalOptions}
              modalOptions={modalOptions}
              addMethod={addCategory}
-             deleteMethod={deleteCategory}
              updateMethod={updateCategory}/>
     </div>
   );
