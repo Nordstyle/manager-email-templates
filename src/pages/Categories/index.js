@@ -34,7 +34,8 @@ const Categories = (props) => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [modalOptions, dispatchModalOptions] = useReducer(modalReducer, {
     open: false,
-    type: undefined
+    effect: undefined,
+    payload: undefined
   });
 
   useEffect(() => {
