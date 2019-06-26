@@ -17,7 +17,8 @@ const useStyles = makeStyles(() => ({
 
 const formHandler = (e, modalHandler, modalOptions, addMethod, deleteMethod, updateCategory) => {
   e.preventDefault();
-  const { effect, payload: { id } } = modalOptions;
+  const { effect, payload } = modalOptions;
+  const id = payload ? payload.id : undefined;
   const form = e.target;
   const title = form.title.value;
   const parent = form.parent.value;
