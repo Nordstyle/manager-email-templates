@@ -22,8 +22,9 @@ const API = {
           method: 'readCategory',
           params: {
             conditions: conditions ? conditions : ['id', 'IS NOT NULL'],
-            perPage: rowsPerPage,
-            page: page + 1
+            perPage: rowsPerPage ? rowsPerPage : 10,
+            page: page ? page + 1 : 1,
+            fields: ['id', 'title', 'parent', 'messages', 'children']
           }
         })
       })
