@@ -32,7 +32,7 @@ const fetchMessagesAllFailed = () => ({
 export const fetchMessagesAll = params => dispatch => {
   dispatch(fetchMessagesAllInit());
 
-  return API.categories.read(params).then(
+  return API.messages.read(params).then(
     response => {
       dispatch(fetchMessagesAllSuccess(response.result));
     },
@@ -63,8 +63,9 @@ const messagesCreateFailed = () => ({
 export const messagesCreate = params => dispatch => {
   dispatch(messagesCreateInit());
 
-  return API.categories.create(params).then(
+  return API.messages.create(params).then(
     response => {
+      console.log(response, 'resp')
       const { title, category } = params;
       dispatch(messagesCreateSuccess(response.result, title, category));
     },
@@ -91,7 +92,7 @@ const messagesDeleteFailed = () => ({
 export const messagesDelete = params => dispatch => {
   dispatch(messagesDeleteInit());
 
-  return API.categories.delete(params).then(
+  return API.messages.delete(params).then(
     () => {
       dispatch(messagesDeleteSuccess(params.id));
     },
@@ -118,7 +119,7 @@ const messagesUpdateFailed = () => ({
 export const messagesUpdate = params => dispatch => {
   dispatch(messagesUpdateInit());
 
-  return API.categories.update(params).then(
+  return API.messages.update(params).then(
     () => {
       const { id, title, category } = params;
       dispatch(messagesUpdateSuccess({ id, title, category }));

@@ -39,7 +39,7 @@ const EnhancedTableHead = props => {
 						onClick={createSortHandler("parent")}
 						sortDirection={orderBy === "parent" ? order : false}
 					>
-						Parent
+						Category parent ID
 					</TableSortLabel>
 				</TableCell>
 				<TableCell>
@@ -49,7 +49,7 @@ const EnhancedTableHead = props => {
 						onClick={createSortHandler("messages")}
 						sortDirection={orderBy === "messages" ? order : false}
 					>
-						Messages count
+						Messages information
 					</TableSortLabel>
 				</TableCell>
 				<TableCell align={"right"}>Actions</TableCell>

@@ -105,8 +105,8 @@ const TableList = props => {
 						) : (
 							data &&
 							stableSort(data, getSorting(order, orderBy)).map(item => {
-								const { id, parent, title, children, messages } = item;
-								const parentId = parent ? parent.id : null;
+								const { id, parent, title, children, messages, body, category } = item;
+								const parentId = (parent ? parent.id : null) || (category ? category.id : null);
 								const hasDeps = children || messages ? !!children.length || !!messages.length : null;
 								return (
 									<TableRow hover key={id}>
@@ -115,7 +115,10 @@ const TableList = props => {
 										</TableCell>
 										<TableCell>{title}</TableCell>
 										<TableCell>{parentId}</TableCell>
-										<TableCell>{messages ? messages.length : null}</TableCell>
+										<TableCell>
+											{messages ? `Count templates: ${messages.length}` : null}
+											{body ? `Template: ${body}` : null}
+										</TableCell>
 										<TableCell align={"right"}>
 											<IconButton
 												onClick={() =>
