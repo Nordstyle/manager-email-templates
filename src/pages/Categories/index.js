@@ -32,6 +32,8 @@ const Categories = (props) => {
   const classes = useStyles();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [order, setOrder] = useState('asc');
+  const [orderBy, setOrderBy] = useState('id');
   const [modalOptions, dispatchModalOptions] = useReducer(modalReducer, {
     open: false,
     effect: undefined,
@@ -57,9 +59,14 @@ const Categories = (props) => {
 	};
 
 	const updateCategory = (params) => {
-		console.log(params, 'update')
 		categoryUpdate(params);
 	};
+
+	const handleRequestSort = (event, property) => {
+    const isDesc = orderBy === property && order === 'desc';
+    setOrder(isDesc ? 'asc' : 'desc');
+    setOrderBy(property);
+  };
 
   return (
     <div className={classes.root}>
@@ -84,7 +91,10 @@ const Categories = (props) => {
                      rowsPerPage={rowsPerPage}
                      setRowsPerPage={setRowsPerPage}
                      isLoading={isLoading}
-                     modalHandler={dispatchModalOptions}/>
+                     modalHandler={dispatchModalOptions}
+                     order={order}
+                     orderBy={orderBy}
+                     handleRequestSort={handleRequestSort}/>
         </Grid>
       </Grid>
       <Modal modalHandler={dispatchModalOptions}

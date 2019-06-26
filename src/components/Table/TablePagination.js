@@ -12,7 +12,7 @@ const useStylesPagination = makeStyles(() => ({
 	},
 }));
 
-export const TablePaginationActions = (props) => {
+const TablePaginationActions = (props) => {
 	const classes = useStylesPagination();
 	const { count, page, rowsPerPage, onChangePage } = props;
 
@@ -61,3 +61,5 @@ export const TablePaginationActions = (props) => {
 		</div>
 	);
 };
+
+export default TablePaginationActions;

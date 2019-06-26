@@ -3,7 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import TablePagination from "@material-ui/core/TablePagination";
@@ -12,7 +11,9 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteForever from '@material-ui/icons/DeleteForever';
 import Edit from '@material-ui/icons/Edit';
-import { TablePaginationActions } from './TablePagination';
+
+import EnhancedTableHead from './TableHead';
+import TablePaginationActions from './TablePagination';
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -45,12 +46,16 @@ const TableList = (props) => {
 		rowsPerPage,
 		setRowsPerPage,
 		isLoading,
-		modalHandler
+		modalHandler,
+		order,
+		orderBy,
+		handleRequestSort
 	} = props;
 	const totalCount = props.data.data.count;
 
 	const classes = useStyles();
 
+	/* METHODS */
 	const handleChangePage = (event, newPage) => {
 		setPage(newPage);
 	};
@@ -63,13 +68,9 @@ const TableList = (props) => {
 		<div className={classes.root}>
 			<Paper className={classes.paper}>
 				<Table className={classes.table} size="small">
-					<TableHead>
-						<TableRow>
-							<TableCell padding={'checkbox'}>ID</TableCell>
-							<TableCell>Title</TableCell>
-							<TableCell align={'right'}>Actions</TableCell>
-						</TableRow>
-					</TableHead>
+					<EnhancedTableHead order={order}
+														 orderBy={orderBy}
+														 onRequestSort={handleRequestSort}/>
 					<TableBody>
 						{isLoading ?
 							(<TableRow>
