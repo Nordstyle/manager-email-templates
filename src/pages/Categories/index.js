@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState, useEffect, useReducer} from 'react';
 import { connect } from 'react-redux';
 import { fetchCategoryAll, categoryCreate, categoryDelete, categoryUpdate } from "../../store/actions/categories";
 import { makeStyles } from '@material-ui/core/styles';
@@ -47,7 +47,6 @@ const Categories = (props) => {
       document.title = 'Email Templates Manager';
     }
   }, [page, rowsPerPage, fetchCategoryAll]);
-
 
   /* METHODS */
   const addCategory = (params) => {

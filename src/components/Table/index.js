@@ -14,6 +14,7 @@ import Edit from '@material-ui/icons/Edit';
 
 import EnhancedTableHead from './TableHead';
 import TablePaginationActions from './TablePagination';
+import {getSorting, stableSort} from "../../utils";
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -78,7 +79,7 @@ const TableList = (props) => {
 									<CircularProgress/>
 								</TableCell>
 							</TableRow>)
-						: data && data.map(item => {
+						: data && stableSort(data, getSorting(order,orderBy)).map(item => {
 							const { id, parent, title } = item;
 							return (
 							<TableRow hover key={id}>
