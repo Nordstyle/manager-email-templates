@@ -14,7 +14,7 @@ import ButtonGroup from "@material-ui/core/ButtonGroup";
 import TableList from "../../components/Table";
 import { getCategoriesSelector } from "../../store/selectors";
 import Modal from "../../components/Modal";
-import {createDataCategory} from "../../utils";
+import {createNormalizeDataCategory} from "../../utils";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -69,8 +69,9 @@ const Categories = props => {
     };
   }, [page, rowsPerPage, fetchCategoryAll]);
 
+  /* TODO: refactor datadatadata */
   const rows = categories.data.data ? categories.data.data.map(item => {
-    return createDataCategory(item.id, item.title, item.parent, item.messages, item.children)
+    return createNormalizeDataCategory(item.id, item.title, item.parent, item.messages, item.children)
   }) : [];
 
   const totalCount = categories.data ? categories.data.count : 0;

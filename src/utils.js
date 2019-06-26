@@ -1,19 +1,19 @@
-export const createDataCategory = (id, title, parent = null, messages = [], children = []) => {
+export const createNormalizeDataCategory = (id, title, parent = null, messages, children) => {
 	return {
 		id,
 		title,
 		parent: parent ? parent.id : null,
-		messages: messages ? messages.length : 0,
-		children: children ? children.length : 0
+		messages: messages.length > 0 ? messages.length : null,
+		children: children.length > 0 ? children.length : null
 	}
 };
 
 export const desc = (a, b, orderBy) => {
 	let firstArg, secondArg, orderArg;
 
-	if (orderBy === "parent") {
-		firstArg = a.parent ? [a.parent] : [null];
-		secondArg = b.parent ? [b.parent] : [null];
+	if (orderBy === "parent" || orderBy === "children") {
+		firstArg = a.parent ? [a[orderBy]] : [0];
+		secondArg = b.parent ? [b[orderBy]] : [0];
 		orderArg = 0;
 	} else {
 		firstArg = a;
