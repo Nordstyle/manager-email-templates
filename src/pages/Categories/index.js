@@ -14,6 +14,7 @@ import ButtonGroup from "@material-ui/core/ButtonGroup";
 import TableList from "../../components/Table";
 import { getCategoriesSelector } from "../../store/selectors";
 import Modal from "../../components/Modal";
+import {createDataCategory} from "../../utils";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -31,6 +32,14 @@ const modalReducer = (state, action) => {
       throw new Error();
   }
 };
+
+const rowHeads = [
+  {id: 'id', numeric: false, disablePadding: false, label: 'id'},
+  {id: 'title', numeric: false, disablePadding: false, label: 'Title'},
+  {id: 'parent', numeric: true, disablePadding: false, label: 'Parent ID'},
+  {id: 'count', numeric: true, disablePadding: false, label: 'Messages count'}
+];
+
 
 const Categories = props => {
   const {
@@ -59,6 +68,12 @@ const Categories = props => {
       document.title = "Email Templates Manager";
     };
   }, [page, rowsPerPage, fetchCategoryAll]);
+
+  const rows = categories.data.data ? categories.data.data.map(item => {
+    return createDataCategory(item.id, item.title, item.parent, item.messages, item.children)
+  }) : [];
+
+  const totalCount = categories.data ? categories.data.count : 0;
 
   /* METHODS */
   const addCategory = params => {
@@ -97,9 +112,11 @@ const Categories = props => {
         <Grid item xs={10}>
           <Typography variant={"h6"}>List of Categories</Typography>
           <TableList
+            rowHeads={rowHeads}
+            rows={rows}
             page={page}
             setPage={setPage}
-            data={categories}
+            totalCount={totalCount}
             rowsPerPage={rowsPerPage}
             setRowsPerPage={setRowsPerPage}
             isLoading={isLoading}

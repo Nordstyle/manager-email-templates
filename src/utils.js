@@ -1,3 +1,13 @@
+export const createDataCategory = (id, title, parent = null, messages = [], children = []) => {
+	return {
+		id,
+		title,
+		parent: parent ? parent.id : null,
+		messages: messages ? messages.length : 0,
+		children: children ? children.length : 0
+	}
+};
+
 export const desc = (a, b, orderBy) => {
 	let firstArg, secondArg, orderArg;
 	if (orderBy === "parent") {
