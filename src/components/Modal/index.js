@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
@@ -60,7 +60,11 @@ const FormDialog = props => {
     <Dialog
       open={open}
       onClose={() => modalHandler({ type: "close" })}
-      onEnter={() => isRowAction ? setValidate({ length: true, update: false }) : setValidate({ length: true, update: true })}
+      onEnter={() =>
+        isRowAction
+          ? setValidate({ length: true, update: false })
+          : setValidate({ length: true, update: true })
+      }
       aria-labelledby="form-dialog-title"
       transitionDuration={0}
     >
@@ -83,18 +87,22 @@ const FormDialog = props => {
             autoFocus
             margin="dense"
             id="title"
-            label={ !validate.length ? 'Maximum string length 250 characters' : 'Title'}
+            label={
+              !validate.length
+                ? "Maximum string length 250 characters"
+                : "Title"
+            }
             defaultValue={isRowAction ? payload.title : ""}
             type="text"
             required
             className={classes.input}
-            onChange={(e) => {
+            onChange={e => {
               if (e.target.value.length >= 250) {
-                setValidate({ ...validate, length: false })
+                setValidate({ ...validate, length: false });
               } else if (isRowAction && e.target.value === payload.title) {
-                setValidate({ ...validate, update: false })
+                setValidate({ ...validate, update: false });
               } else {
-                setValidate({ length: true, update: true })
+                setValidate({ length: true, update: true });
               }
             }}
             fullWidth
@@ -119,8 +127,11 @@ const FormDialog = props => {
               Cancel
             </Button>
             <Button
-              disabled={!validate.length || !validate.update }
-              type="submit">{actionTitle}</Button>
+              disabled={!validate.length || !validate.update}
+              type="submit"
+            >
+              {actionTitle}
+            </Button>
           </ButtonGroup>
         </DialogActions>
       </form>
