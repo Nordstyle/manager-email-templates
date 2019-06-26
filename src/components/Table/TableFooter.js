@@ -16,7 +16,6 @@ const CustomTableFooter = props => {
     <TableFooter>
       <TableRow>
         <TablePagination
-          component="div"
           rowsPerPageOptions={[5, 10, 25]}
           colSpan={3}
           count={count}

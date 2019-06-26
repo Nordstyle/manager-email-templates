@@ -17,18 +17,21 @@ const useStyles = makeStyles(theme => ({
 		width: "100%"
 	},
 	paper: {
-		marginTop: theme.spacing(3),
+		marginTop: 20,
 		width: "100%",
 		overflowX: "auto",
-		marginBottom: theme.spacing(2)
+		marginBottom: 20
 	},
 	table: {
-		minWidth: 650
+		minWidth: 750
 	},
 	loader: {
 		width: "100%",
 		textAlign: "center",
 		padding: "20px"
+	},
+	tableWrapper: {
+		overflowX: 'auto'
 	}
 }));
 
@@ -76,51 +79,53 @@ const TableList = props => {
 	return (
 		<div className={classes.root}>
 			<Paper className={classes.paper}>
-				<Table className={classes.table} size="small">
-					<EnhancedTableHead
-						rowHeads={rowHeads}
-						order={order}
-						orderBy={orderBy}
-						onRequestSort={handleRequestSort}
-					/>
-					<TableBody>
-						{isLoading ? (
-							<TableRow>
-								<TableCell
-									className={classes.loader}
-									component="th"
-									scope="row"
-								>
-									<CircularProgress />
-								</TableCell>
-							</TableRow>
-						) : (
-							rows && rows.length > 0 &&
-							stableSort(rows, getSorting(order, orderBy)).map(row => {
-								const hasDeps = !!row.children || !!row.messages;
-								return (
-									<TableRowCategory
-										key={row.id}
-										row={row}
-										hasDeps={hasDeps}
-										modalHandler={modalHandler}
-										setOpenTooltip={setOpenTooltip}
-										openTooltip={openTooltip}
-										deleteMethod={deleteMethod}
-									/>
-								)
-							})
+				<div className={classes.tableWrapper}>
+					<Table className={classes.table} size="medium">
+						<EnhancedTableHead
+							rowHeads={rowHeads}
+							order={order}
+							orderBy={orderBy}
+							onRequestSort={handleRequestSort}
+						/>
+						<TableBody>
+							{isLoading ? (
+								<TableRow>
+									<TableCell
+										className={classes.loader}
+										component="th"
+										scope="row"
+									>
+										<CircularProgress />
+									</TableCell>
+								</TableRow>
+							) : (
+								rows && rows.length > 0 &&
+								stableSort(rows, getSorting(order, orderBy)).map(row => {
+									const hasDeps = !!row.children || !!row.messages;
+									return (
+										<TableRowCategory
+											key={row.id}
+											row={row}
+											hasDeps={hasDeps}
+											modalHandler={modalHandler}
+											setOpenTooltip={setOpenTooltip}
+											openTooltip={openTooltip}
+											deleteMethod={deleteMethod}
+										/>
+									)
+								})
+							)}
+						</TableBody>
+						{!isLoading && rows && rows.length > 0 && (
+							<CustomTableFooter
+								count={totalCount}
+								rowsPerPage={rowsPerPage}
+								page={page}
+								handleChangePage={handleChangePage}
+								handleChangeRowsPerPage={handleChangeRowsPerPage}/>
 						)}
-					</TableBody>
-					{!isLoading && rows && rows.length > 0 && (
-						<CustomTableFooter
-							count={totalCount}
-							rowsPerPage={rowsPerPage}
-							page={page}
-							handleChangePage={handleChangePage}
-							handleChangeRowsPerPage={handleChangeRowsPerPage}/>
-					)}
-				</Table>
+					</Table>
+				</div>
 			</Paper>
 		</div>
 	);
