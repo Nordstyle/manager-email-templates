@@ -3,8 +3,8 @@ export const createNormalizeDataCategory = (id, title, parent = null, messages, 
 		id,
 		title,
 		parent: parent ? parent.id : null,
-		messages: messages.length > 0 ? messages.length : null,
-		children: children.length > 0 ? children.length : null
+		messages: messages ? (messages.length > 0 ? messages.length : null) : null,
+		children: children ? (children.length > 0 ? children.length : null) : null
 	}
 };
 
