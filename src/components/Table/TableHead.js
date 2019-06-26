@@ -5,53 +5,29 @@ import TableCell from "@material-ui/core/TableCell";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 
 const EnhancedTableHead = props => {
-	const { order, orderBy, onRequestSort } = props;
+	const { order, orderBy, onRequestSort, rowHeads } = props;
 	const createSortHandler = property => event => {
 		onRequestSort(event, property);
 	};
 	return (
 		<TableHead>
 			<TableRow>
-				<TableCell>
-					<TableSortLabel
-						active={orderBy === "id"}
-						direction={order}
-						onClick={createSortHandler("id")}
-						sortDirection={orderBy === "id" ? order : false}
+				{rowHeads.map(row => (
+					<TableCell
+						key={row.id}
+						align={row.numeric ? 'right' : 'left'}
+						padding={row.disablePadding ? 'none' : 'default'}
+						sortDirection={orderBy === row.id ? order : false}
 					>
-						ID
-					</TableSortLabel>
-				</TableCell>
-				<TableCell>
-					<TableSortLabel
-						active={orderBy === "title"}
-						direction={order}
-						onClick={createSortHandler("title")}
-						sortDirection={orderBy === "title" ? order : false}
-					>
-						Title
-					</TableSortLabel>
-				</TableCell>
-				<TableCell>
-					<TableSortLabel
-						active={orderBy === "parent"}
-						direction={order}
-						onClick={createSortHandler("parent")}
-						sortDirection={orderBy === "parent" ? order : false}
-					>
-						Category parent ID
-					</TableSortLabel>
-				</TableCell>
-				<TableCell>
-					<TableSortLabel
-						active={orderBy === "messages"}
-						direction={order}
-						onClick={createSortHandler("messages")}
-						sortDirection={orderBy === "messages" ? order : false}
-					>
-						Messages information
-					</TableSortLabel>
-				</TableCell>
+						<TableSortLabel
+							active={orderBy === row.id}
+							direction={order}
+							onClick={createSortHandler(row.id)}
+						>
+							{row.label}
+						</TableSortLabel>
+					</TableCell>
+				))}
 				<TableCell align={"right"}>Actions</TableCell>
 			</TableRow>
 		</TableHead>

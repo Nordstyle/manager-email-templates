@@ -5,19 +5,12 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import TablePagination from "@material-ui/core/TablePagination";
-import TableFooter from "@material-ui/core/TableFooter";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import IconButton from "@material-ui/core/IconButton";
-import DeleteForever from "@material-ui/icons/DeleteForever";
-import Edit from "@material-ui/icons/Edit";
-import Tooltip from "@material-ui/core/Tooltip";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 
-import TooltipAlert from "./TooltipAlert";
 import EnhancedTableHead from "./TableHead";
-import TablePaginationActions from "./TablePagination";
 import { getSorting, stableSort } from "../../utils";
+import TableRowCategory from "./TableRowCategory";
+import CustomTableFooter from "./TableFooter";
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -51,13 +44,12 @@ const tooltipReducer = (state, action) => {
 };
 
 const TableList = props => {
-	/* TODO: refactor datadatadata */
 	const {
+		rowHeads,
+		rows,
+		totalCount,
 		page,
 		setPage,
-		data: {
-			data: { data }
-		},
 		rowsPerPage,
 		setRowsPerPage,
 		isLoading,
@@ -67,7 +59,6 @@ const TableList = props => {
 		handleRequestSort,
 		deleteMethod
 	} = props;
-	const totalCount = props.data.data.count;
 	const [openTooltip, setOpenTooltip] = useReducer(tooltipReducer, {
 		openId: undefined
 	});
@@ -87,6 +78,7 @@ const TableList = props => {
 			<Paper className={classes.paper}>
 				<Table className={classes.table} size="small">
 					<EnhancedTableHead
+						rowHeads={rowHeads}
 						order={order}
 						orderBy={orderBy}
 						onRequestSort={handleRequestSort}
@@ -103,95 +95,30 @@ const TableList = props => {
 								</TableCell>
 							</TableRow>
 						) : (
-							data &&
-							stableSort(data, getSorting(order, orderBy)).map(item => {
-								const { id, parent, title, children, messages, body, category } = item;
-								const parentId = (parent ? parent.id : null) || (category ? category.id : null);
-								const hasDeps = children || messages ? !!children.length || !!messages.length : null;
+							rows && rows.length > 0 &&
+							stableSort(rows, getSorting(order, orderBy)).map(row => {
+								const hasDeps = !!row.children || !!row.messages;
 								return (
-									<TableRow hover key={id}>
-										<TableCell component="th" scope="row">
-											{id}
-										</TableCell>
-										<TableCell>{title}</TableCell>
-										<TableCell>{parentId}</TableCell>
-										<TableCell>
-											{messages ? `Count templates: ${messages.length}` : null}
-											{body ? `Template: ${body}` : null}
-										</TableCell>
-										<TableCell align={"right"}>
-											<IconButton
-												onClick={() =>
-													modalHandler({
-														type: "open",
-														effect: "update",
-														payload: { id, parent, title }
-													})
-												}
-											>
-												<Edit />
-											</IconButton>
-											<ClickAwayListener
-												onClickAway={() => setOpenTooltip({ type: "close" })}
-											>
-                        <span>
-                          <Tooltip
-														PopperProps={{
-															disablePortal: true
-														}}
-														onClose={() => setOpenTooltip({ type: "close" })}
-														open={openTooltip.openId === id}
-														disableFocusListener
-														disableHoverListener
-														disableTouchListener
-														interactive
-														title={
-															<>
-																<TooltipAlert
-																	id={id}
-																	deleteMethod={deleteMethod}
-																	setOpenTooltip={setOpenTooltip}
-																/>
-															</>
-														}
-													>
-                            <IconButton
-															onClick={() =>
-																hasDeps
-																	? setOpenTooltip({ type: "open", openId: id })
-																	: deleteMethod({ id })
-															}
-														>
-                              <DeleteForever />
-                            </IconButton>
-                          </Tooltip>
-                        </span>
-											</ClickAwayListener>
-										</TableCell>
-									</TableRow>
-								);
+									<TableRowCategory
+										key={row.id}
+										row={row}
+										hasDeps={hasDeps}
+										modalHandler={modalHandler}
+										setOpenTooltip={setOpenTooltip}
+										openTooltip={openTooltip}
+										deleteMethod={deleteMethod}
+									/>
+								)
 							})
 						)}
 					</TableBody>
-					{!isLoading && data && (
-						<TableFooter>
-							<TableRow>
-								<TablePagination
-									rowsPerPageOptions={[5, 10, 25]}
-									colSpan={3}
-									count={totalCount}
-									rowsPerPage={rowsPerPage}
-									page={page}
-									SelectProps={{
-										inputProps: { "aria-label": "Rows per page" },
-										native: true
-									}}
-									onChangePage={handleChangePage}
-									onChangeRowsPerPage={handleChangeRowsPerPage}
-									ActionsComponent={TablePaginationActions}
-								/>
-							</TableRow>
-						</TableFooter>
+					{!isLoading && rows && rows.length > 0 && (
+						<CustomTableFooter
+							count={totalCount}
+							rowsPerPage={rowsPerPage}
+							page={page}
+							handleChangePage={handleChangePage}
+							handleChangeRowsPerPage={handleChangeRowsPerPage}/>
 					)}
 				</Table>
 			</Paper>
