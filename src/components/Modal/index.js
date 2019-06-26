@@ -27,9 +27,6 @@ const formHandler = (e, modalHandler, modalOptions, addMethod, deleteMethod, upd
     case 'add':
       addMethod({ title, parent });
       break;
-    case 'delete':
-      deleteMethod({ id });
-      break;
     case 'update':
       updateCategory({ id, title, parent });
       break;
@@ -42,8 +39,8 @@ const formHandler = (e, modalHandler, modalOptions, addMethod, deleteMethod, upd
 const FormDialog = (props) => {
   const { modalOptions:{ open, effect, payload }, modalHandler, addMethod, deleteMethod, updateMethod } = props;
   const classes = useStyles();
-  const actionTitle = effect === 'add' ? 'Add' : (effect === 'delete' ? 'Delete' : 'Update');
-  const isRowAction = effect === 'delete' || effect === 'update';
+  const actionTitle = effect === 'add' ? 'Add' : 'Update';
+  const isRowAction = effect === 'update';
   return (
     <Dialog open={open}
             onClose={() => modalHandler({ type: 'close' })}
