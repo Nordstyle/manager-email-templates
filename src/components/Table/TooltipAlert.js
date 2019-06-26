@@ -8,7 +8,7 @@ const TooltipAlert = props => {
   return (
     <div>
       <Typography>
-        The category has dependencies, do you really want to delete it?
+        This category has dependencies, do you really want to delete it?
       </Typography>
       <ButtonGroup size={"small"} color={"primary"} variant={"contained"}>
         <Button onCLick={() => setOpenTooltip({ type: "close" })}> No </Button>
