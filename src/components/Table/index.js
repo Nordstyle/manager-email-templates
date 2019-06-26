@@ -115,6 +115,7 @@ const TableList = props => {
 										</TableCell>
 										<TableCell>{title}</TableCell>
 										<TableCell>{parentId}</TableCell>
+										<TableCell>{messages ? messages.length : null}</TableCell>
 										<TableCell align={"right"}>
 											<IconButton
 												onClick={() =>

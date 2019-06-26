@@ -42,6 +42,16 @@ const EnhancedTableHead = props => {
 						Parent
 					</TableSortLabel>
 				</TableCell>
+				<TableCell>
+					<TableSortLabel
+						active={orderBy === "messages"}
+						direction={order}
+						onClick={createSortHandler("messages")}
+						sortDirection={orderBy === "messages" ? order : false}
+					>
+						Messages count
+					</TableSortLabel>
+				</TableCell>
 				<TableCell align={"right"}>Actions</TableCell>
 			</TableRow>
 		</TableHead>
