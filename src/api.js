@@ -39,7 +39,7 @@ const API = {
           params: {
             data: {
               title,
-              parent: parent ? { id: parent } : null
+              parent: parent ? { id: Number(parent) } : null
             }
           }
         })
@@ -67,6 +67,68 @@ const API = {
         body: JSON.stringify({
           jsonrpc: "2.0",
           method: "deleteCategory",
+          params: {
+            conditions: conditions ? conditions : ["id", "=", id]
+          }
+        })
+      });
+    }
+  },
+
+  messages: {
+    read: ({ page, rowsPerPage, conditions }) => {
+      return getJSON(ENDPOINT, {
+        ...queryOptions,
+        body: JSON.stringify({
+          jsonrpc: "2.0",
+          method: "readMessage",
+          params: {
+            conditions: conditions ? conditions : ["id", "IS NOT NULL"],
+            perPage: rowsPerPage ? rowsPerPage : 10,
+            page: page ? page + 1 : 1,
+            fields: ["id", "title", "body", "category"]
+          }
+        })
+      });
+    },
+    create: ({ title, category, body }) => {
+      return getJSON(ENDPOINT, {
+        ...queryOptions,
+        body: JSON.stringify({
+          jsonrpc: "2.0",
+          method: "createMessage",
+          params: {
+            data: {
+              title,
+              category: category ? { id: Number(category) } : null,
+              body: body ? body : null
+            }
+          }
+        })
+      });
+    },
+    update: ({ id, title, category, conditions }) => {
+      return getJSON(ENDPOINT, {
+        ...queryOptions,
+        body: JSON.stringify({
+          jsonrpc: "2.0",
+          method: "updateMessage",
+          params: {
+            conditions: conditions ? conditions : ["id", "=", id],
+            data: {
+              title,
+              category: category ? { id: Number(category) } : null
+            }
+          }
+        })
+      });
+    },
+    delete: ({ id, conditions }) => {
+      return getJSON(ENDPOINT, {
+        ...queryOptions,
+        body: JSON.stringify({
+          jsonrpc: "2.0",
+          method: "deleteMessage",
           params: {
             conditions: conditions ? conditions : ["id", "=", id]
           }
