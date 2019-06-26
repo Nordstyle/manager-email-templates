@@ -7,7 +7,10 @@ import {
 	CATEGORY_CREATE_SUCCESS,
 	CATEGORY_DELETE_FAILED,
 	CATEGORY_DELETE_INIT,
-	CATEGORY_DELETE_SUCCESS
+	CATEGORY_DELETE_SUCCESS,
+	CATEGORY_UPDATE_FAILED,
+	CATEGORY_UPDATE_INIT,
+	CATEGORY_UPDATE_SUCCESS
 } from '../constants'
 
 import API from '../../api';
@@ -90,6 +93,35 @@ export const categoryDelete = (params) => dispatch => {
 		},
 		error => {
 			dispatch(categoryDeleteFailed(error));
+		}
+	);
+};
+
+
+/* UPDATE */
+const categoryUpdateInit = () => ({
+	type: CATEGORY_UPDATE_INIT
+});
+
+const categoryUpdateSuccess = (id) => ({
+	type: CATEGORY_UPDATE_SUCCESS,
+	payload: id
+});
+
+const categoryUpdateFailed = () => ({
+	type: CATEGORY_UPDATE_FAILED
+});
+
+export const categoryUpdate = (params) => dispatch => {
+	dispatch(categoryUpdateInit());
+
+	return API.categories.update(params).then(
+		() => {
+			const { id, title, parent } = params;
+			dispatch(categoryUpdateSuccess({ id, title, parent }));
+		},
+		error => {
+			dispatch(categoryUpdateFailed(error));
 		}
 	);
 };

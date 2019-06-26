@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useReducer } from 'react';
 import { connect } from 'react-redux';
-import { fetchCategoryAll, categoryCreate, categoryDelete } from "../../store/actions/categories";
+import { fetchCategoryAll, categoryCreate, categoryDelete, categoryUpdate } from "../../store/actions/categories";
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import {Typography} from "@material-ui/core";
@@ -28,7 +28,7 @@ const modalReducer = (state, action) => {
 };
 
 const Categories = (props) => {
-  const { fetchCategoryAll, categories, isLoading, categoryCreate, categoryDelete } = props;
+  const { fetchCategoryAll, categories, isLoading, categoryCreate, categoryDelete, categoryUpdate } = props;
   const classes = useStyles();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -53,8 +53,13 @@ const Categories = (props) => {
   };
 
   const deleteCategory = (params) => {
-    categoryDelete(params);
-  };
+		categoryDelete(params);
+	};
+
+	const updateCategory = (params) => {
+		console.log(params, 'update')
+		categoryUpdate(params);
+	};
 
   return (
     <div className={classes.root}>
@@ -85,12 +90,13 @@ const Categories = (props) => {
       <Modal modalHandler={dispatchModalOptions}
              modalOptions={modalOptions}
              addMethod={addCategory}
-             deleteMethod={deleteCategory}/>
+             deleteMethod={deleteCategory}
+             updateMethod={updateCategory}/>
     </div>
   );
 };
 
 export default connect(
   store => ({ categories: getCategoriesSelector(store), isLoading: store.categories.isLoading }),
-  { fetchCategoryAll, categoryCreate, categoryDelete }
+  { fetchCategoryAll, categoryCreate, categoryDelete, categoryUpdate }
 )(Categories);

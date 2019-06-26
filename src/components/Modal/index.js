@@ -15,7 +15,7 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const formHandler = (e, modalHandler, modalOptions, addMethod, deleteMethod) => {
+const formHandler = (e, modalHandler, modalOptions, addMethod, deleteMethod, updateCategory) => {
   e.preventDefault();
   const { effect, payload: { id } } = modalOptions;
   const form = e.target;
@@ -30,7 +30,7 @@ const formHandler = (e, modalHandler, modalOptions, addMethod, deleteMethod) => 
       deleteMethod({ id });
       break;
     case 'update':
-      deleteMethod({ id });
+      updateCategory({ id, title, parent });
       break;
     default: modalHandler({ type: 'close' });
   }
@@ -39,7 +39,7 @@ const formHandler = (e, modalHandler, modalOptions, addMethod, deleteMethod) => 
 };
 
 const FormDialog = (props) => {
-  const { modalOptions:{ open, effect, payload }, modalHandler, addMethod, deleteMethod } = props;
+  const { modalOptions:{ open, effect, payload }, modalHandler, addMethod, deleteMethod, updateMethod } = props;
   const classes = useStyles();
   const actionTitle = effect === 'add' ? 'Add' : (effect === 'delete' ? 'Delete' : 'Update');
   const isRowAction = effect === 'delete' || effect === 'update';
@@ -48,7 +48,7 @@ const FormDialog = (props) => {
             onClose={() => modalHandler({ type: 'close' })}
             aria-labelledby="form-dialog-title"
             transitionDuration={0}>
-      <form onSubmit={(e) => formHandler(e, modalHandler, { effect, payload }, addMethod, deleteMethod)}>
+      <form onSubmit={(e) => formHandler(e, modalHandler, { effect, payload }, addMethod, deleteMethod, updateMethod)}>
         <DialogTitle id="form-dialog-title">
           { actionTitle }
         </DialogTitle>
