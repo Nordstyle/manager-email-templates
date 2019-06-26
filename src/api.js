@@ -91,7 +91,7 @@ const API = {
         })
       });
     },
-    create: ({ title, category, body }) => {
+    create: ({ title, parent, body }) => {
       return getJSON(ENDPOINT, {
         ...queryOptions,
         body: JSON.stringify({
@@ -100,14 +100,14 @@ const API = {
           params: {
             data: {
               title,
-              category: category ? { id: Number(category) } : null,
-              body: body ? body : null
+              category: parent ? { id: Number(parent) } : null,
+              body: body ? body : ''
             }
           }
         })
       });
     },
-    update: ({ id, title, category, conditions }) => {
+    update: ({ id, title, parent, conditions }) => {
       return getJSON(ENDPOINT, {
         ...queryOptions,
         body: JSON.stringify({
@@ -117,7 +117,7 @@ const API = {
             conditions: conditions ? conditions : ["id", "=", id],
             data: {
               title,
-              category: category ? { id: Number(category) } : null
+              category: parent ? { id: Number(parent) } : null
             }
           }
         })
