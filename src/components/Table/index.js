@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useReducer} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -11,7 +11,10 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteForever from '@material-ui/icons/DeleteForever';
 import Edit from '@material-ui/icons/Edit';
+import Tooltip from '@material-ui/core/Tooltip';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 
+import TooltipAlert from './TooltipAlert'
 import EnhancedTableHead from './TableHead';
 import TablePaginationActions from './TablePagination';
 import {getSorting, stableSort} from "../../utils";
@@ -36,6 +39,16 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
+
+const tooltipReducer = (state, action) => {
+	switch (action.type) {
+		case 'open': return { openId: action.openId };
+		case 'close': return { openId: undefined };
+		default:
+			throw new Error();
+	}
+};
+
 const TableList = (props) => {
 	/* TODO: refactor datadatadata */
 	const {
@@ -54,7 +67,10 @@ const TableList = (props) => {
 		deleteMethod
 	} = props;
 	const totalCount = props.data.data.count;
-
+	const [openTooltip, setOpenTooltip] = useReducer(tooltipReducer, {
+		openId: undefined
+	});
+	console.log(openTooltip, 'opento')
 	const classes = useStyles();
 
 	/* METHODS */
@@ -95,9 +111,32 @@ const TableList = (props) => {
 									<IconButton onClick={() => modalHandler({type: 'open', effect: 'update', payload: { id, parent, title }})}>
 										<Edit/>
 									</IconButton>
-									<IconButton onClick={() => modalHandler({type: 'open', effect: 'delete', payload: { id, parent, title }})}>
-										<DeleteForever/>
-									</IconButton>
+									<ClickAwayListener onClickAway={() => setOpenTooltip({ type: 'close' })}>
+										<span>
+											<Tooltip
+												PopperProps={{
+													disablePortal: true
+												}}
+												onClose={() => setOpenTooltip({ type: 'close' })}
+												open={openTooltip.openId === id}
+												disableFocusListener
+												disableHoverListener
+												disableTouchListener
+												interactive
+												title={
+													<>
+														<TooltipAlert id={id}
+																					deleteMethod={deleteMethod}
+																					setOpenTooltip={setOpenTooltip}/>
+													</>
+												}
+												>
+												<IconButton onClick={() => hasDeps ? setOpenTooltip({ type: 'open', openId: id }) : deleteMethod({ id })}>
+													<DeleteForever/>
+												</IconButton>
+											</Tooltip>
+										</span>
+									</ClickAwayListener>
 								</TableCell>
 							</TableRow>
 						)})}
