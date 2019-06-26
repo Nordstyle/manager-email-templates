@@ -1,34 +1,34 @@
 import React from "react";
-import {makeStyles} from "@material-ui/core";
-import IconButton from '@material-ui/core/IconButton';
-import FirstPageIcon from '@material-ui/icons/FirstPage';
-import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
-import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
-import LastPageIcon from '@material-ui/icons/LastPage';
+import { makeStyles } from "@material-ui/core";
+import IconButton from "@material-ui/core/IconButton";
+import FirstPageIcon from "@material-ui/icons/FirstPage";
+import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
+import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
+import LastPageIcon from "@material-ui/icons/LastPage";
 
 const useStylesPagination = makeStyles(() => ({
 	root: {
 		flexShrink: 0
-	},
+	}
 }));
 
-const TablePaginationActions = (props) => {
+const TablePaginationActions = props => {
 	const classes = useStylesPagination();
 	const { count, page, rowsPerPage, onChangePage } = props;
 
-	const handleFirstPageButtonClick = (event) => {
+	const handleFirstPageButtonClick = event => {
 		onChangePage(event, 0);
 	};
 
-	const handleBackButtonClick = (event) => {
+	const handleBackButtonClick = event => {
 		onChangePage(event, page - 1);
 	};
 
-	const handleNextButtonClick = (event) => {
+	const handleNextButtonClick = event => {
 		onChangePage(event, page + 1);
 	};
 
-	const handleLastPageButtonClick = (event) => {
+	const handleLastPageButtonClick = event => {
 		onChangePage(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
 	};
 
@@ -41,7 +41,11 @@ const TablePaginationActions = (props) => {
 			>
 				<FirstPageIcon />
 			</IconButton>
-			<IconButton onClick={handleBackButtonClick} disabled={page === 0} aria-label="Previous Page">
+			<IconButton
+				onClick={handleBackButtonClick}
+				disabled={page === 0}
+				aria-label="Previous Page"
+			>
 				<KeyboardArrowLeft />
 			</IconButton>
 			<IconButton

@@ -11,16 +11,16 @@ import {
 	CATEGORY_UPDATE_FAILED,
 	CATEGORY_UPDATE_INIT,
 	CATEGORY_UPDATE_SUCCESS
-} from '../constants'
+} from "../constants";
 
-import API from '../../api';
+import API from "../../api";
 
 /* FETCH ALL */
 const fetchCategoryAllInit = () => ({
 	type: CATEGORY_FETCH_READ
 });
 
-const fetchCategoryAllSuccess = (data) => ({
+const fetchCategoryAllSuccess = data => ({
 	type: CATEGORY_FETCH_READ_FAILED,
 	payload: data
 });
@@ -29,7 +29,7 @@ const fetchCategoryAllFailed = () => ({
 	type: CATEGORY_FETCH_READ_SUCCESS
 });
 
-export const fetchCategoryAll = (params) => dispatch => {
+export const fetchCategoryAll = params => dispatch => {
 	dispatch(fetchCategoryAllInit());
 
 	return API.categories.read(params).then(
@@ -49,14 +49,18 @@ const categoryCreateInit = () => ({
 
 const categoryCreateSuccess = (data, title, parent) => ({
 	type: CATEGORY_CREATE_SUCCESS,
-	payload: { id: data['Primary key']['id'], title, parent: parent ? { id: parent } : null }
+	payload: {
+		id: data["Primary key"]["id"],
+		title,
+		parent: parent ? { id: parent } : null
+	}
 });
 
 const categoryCreateFailed = () => ({
 	type: CATEGORY_CREATE_FAILED
 });
 
-export const categoryCreate = (params) => dispatch => {
+export const categoryCreate = params => dispatch => {
 	dispatch(categoryCreateInit());
 
 	return API.categories.create(params).then(
@@ -75,7 +79,7 @@ const categoryDeleteInit = () => ({
 	type: CATEGORY_DELETE_INIT
 });
 
-const categoryDeleteSuccess = (id) => ({
+const categoryDeleteSuccess = id => ({
 	type: CATEGORY_DELETE_SUCCESS,
 	payload: id
 });
@@ -84,7 +88,7 @@ const categoryDeleteFailed = () => ({
 	type: CATEGORY_DELETE_FAILED
 });
 
-export const categoryDelete = (params) => dispatch => {
+export const categoryDelete = params => dispatch => {
 	dispatch(categoryDeleteInit());
 
 	return API.categories.delete(params).then(
@@ -97,13 +101,12 @@ export const categoryDelete = (params) => dispatch => {
 	);
 };
 
-
 /* UPDATE */
 const categoryUpdateInit = () => ({
 	type: CATEGORY_UPDATE_INIT
 });
 
-const categoryUpdateSuccess = (id) => ({
+const categoryUpdateSuccess = id => ({
 	type: CATEGORY_UPDATE_SUCCESS,
 	payload: id
 });
@@ -112,7 +115,7 @@ const categoryUpdateFailed = () => ({
 	type: CATEGORY_UPDATE_FAILED
 });
 
-export const categoryUpdate = (params) => dispatch => {
+export const categoryUpdate = params => dispatch => {
 	dispatch(categoryUpdateInit());
 
 	return API.categories.update(params).then(

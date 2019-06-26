@@ -1,13 +1,13 @@
 export const desc = (a, b, orderBy) => {
 	let firstArg, secondArg, orderArg;
-	if (orderBy === 'parent') {
+	if (orderBy === "parent") {
 		firstArg = a.parent ? [a.parent.id] : [null];
 		secondArg = b.parent ? [b.parent.id] : [null];
 		orderArg = 0;
 	} else {
-		 firstArg = a;
-		 secondArg = b;
-		 orderArg = orderBy;
+		firstArg = a;
+		secondArg = b;
+		orderArg = orderBy;
 	}
 	if (secondArg[orderArg] < firstArg[orderArg]) {
 		return -1;
@@ -29,5 +29,7 @@ export const stableSort = (array, cmp) => {
 };
 
 export const getSorting = (order, orderBy) => {
-	return order === 'desc' ? (a, b) => desc(a, b, orderBy) : (a, b) => -desc(a, b, orderBy);
+	return order === "desc"
+		? (a, b) => desc(a, b, orderBy)
+		: (a, b) => -desc(a, b, orderBy);
 };

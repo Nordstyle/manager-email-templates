@@ -1,10 +1,10 @@
-import React from 'react';
-import TableHead from '@material-ui/core/TableHead';
+import React from "react";
+import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
-import TableSortLabel from '@material-ui/core/TableSortLabel';
+import TableSortLabel from "@material-ui/core/TableSortLabel";
 
-const EnhancedTableHead = (props) => {
+const EnhancedTableHead = props => {
 	const { order, orderBy, onRequestSort } = props;
 	const createSortHandler = property => event => {
 		onRequestSort(event, property);
@@ -14,35 +14,38 @@ const EnhancedTableHead = (props) => {
 			<TableRow>
 				<TableCell>
 					<TableSortLabel
-						active={orderBy === 'id'}
+						active={orderBy === "id"}
 						direction={order}
-						onClick={createSortHandler('id')}
-						sortDirection={orderBy === 'id' ? order : false}>
+						onClick={createSortHandler("id")}
+						sortDirection={orderBy === "id" ? order : false}
+					>
 						ID
 					</TableSortLabel>
 				</TableCell>
 				<TableCell>
 					<TableSortLabel
-						active={orderBy === 'title'}
+						active={orderBy === "title"}
 						direction={order}
-						onClick={createSortHandler('title')}
-						sortDirection={orderBy === 'title' ? order : false}>
+						onClick={createSortHandler("title")}
+						sortDirection={orderBy === "title" ? order : false}
+					>
 						Title
 					</TableSortLabel>
 				</TableCell>
 				<TableCell>
 					<TableSortLabel
-						active={orderBy === 'parent'}
+						active={orderBy === "parent"}
 						direction={order}
-						onClick={createSortHandler('parent')}
-						sortDirection={orderBy === 'parent' ? order : false}>
+						onClick={createSortHandler("parent")}
+						sortDirection={orderBy === "parent" ? order : false}
+					>
 						Parent
 					</TableSortLabel>
 				</TableCell>
-				<TableCell align={'right'}>Actions</TableCell>
+				<TableCell align={"right"}>Actions</TableCell>
 			</TableRow>
 		</TableHead>
-	)
+	);
 };
 
 export default EnhancedTableHead;
