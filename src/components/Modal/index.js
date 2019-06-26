@@ -26,7 +26,10 @@ const formHandler = (e, modalHandler, modalOptions, addMethod, deleteMethod) => 
     case 'add':
       addMethod({ title, parent });
       break;
-    case 'actions':
+    case 'delete':
+      deleteMethod({ id });
+      break;
+    case 'update':
       deleteMethod({ id });
       break;
     default: modalHandler({ type: 'close' });
@@ -38,14 +41,16 @@ const formHandler = (e, modalHandler, modalOptions, addMethod, deleteMethod) => 
 const FormDialog = (props) => {
   const { modalOptions:{ open, effect, payload }, modalHandler, addMethod, deleteMethod } = props;
   const classes = useStyles();
+  const actionTitle = effect === 'add' ? 'Add' : (effect === 'delete' ? 'Delete' : 'Update');
+  const isRowAction = effect === 'delete' || effect === 'update';
   return (
     <Dialog open={open}
             onClose={() => modalHandler({ type: 'close' })}
-            aria-labelledby="form-dialog-title">
+            aria-labelledby="form-dialog-title"
+            transitionDuration={0}>
       <form onSubmit={(e) => formHandler(e, modalHandler, { effect, payload }, addMethod, deleteMethod)}>
         <DialogTitle id="form-dialog-title">
-          { effect === 'add' && 'Add' }
-          { effect === 'actions' && 'Row actions' }
+          { actionTitle }
         </DialogTitle>
         <DialogContent>
           <TextField
@@ -53,7 +58,7 @@ const FormDialog = (props) => {
             margin="dense"
             id="title"
             label="Category title"
-            defaultValue={ effect === 'actions' ? payload.title : '' }
+            defaultValue={ isRowAction ? payload.title : '' }
             type="text"
             required
             className={classes.input}
@@ -64,7 +69,7 @@ const FormDialog = (props) => {
             margin="dense"
             id="parent"
             label="Category parent id"
-            defaultValue={effect === 'actions' ? payload.id : ''}
+            defaultValue={ isRowAction ? payload.id : '' }
             type="number"
             className={classes.input}
             fullWidth
@@ -79,15 +84,9 @@ const FormDialog = (props) => {
                     onClick={() => modalHandler({ type: 'close' })}>
               Cancel
             </Button>
-            { effect === 'actions' ? (
-              <Button type='submit'>
-                Delete
-              </Button>
-            ) : (
-              <Button type='submit'>
-                Add
-              </Button>
-            )}
+            <Button type='submit'>
+              { actionTitle }
+            </Button>
           </ButtonGroup>
         </DialogActions>
       </form>

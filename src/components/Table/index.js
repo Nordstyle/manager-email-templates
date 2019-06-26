@@ -9,6 +9,9 @@ import Paper from '@material-ui/core/Paper';
 import TablePagination from "@material-ui/core/TablePagination";
 import TableFooter from "@material-ui/core/TableFooter";
 import CircularProgress from '@material-ui/core/CircularProgress';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteForever from '@material-ui/icons/DeleteForever';
+import Edit from '@material-ui/icons/Edit';
 import { TablePaginationActions } from './TablePagination';
 
 const useStyles = makeStyles(theme => ({
@@ -64,6 +67,7 @@ const TableList = (props) => {
 						<TableRow>
 							<TableCell padding={'checkbox'}>ID</TableCell>
 							<TableCell>Title</TableCell>
+							<TableCell align={'right'}>Actions</TableCell>
 						</TableRow>
 					</TableHead>
 					<TableBody>
@@ -76,13 +80,19 @@ const TableList = (props) => {
 						: data && data.map(item => {
 							const { id, parent, title } = item;
 							return (
-							<TableRow onClick={() => modalHandler({type: 'open', effect: 'actions', payload: { id, parent, title }})}
-												hover
-												key={id}>
+							<TableRow hover key={id}>
 								<TableCell component="th" scope="row">
 									{id}
 								</TableCell>
 								<TableCell>{title}</TableCell>
+								<TableCell align={'right'}>
+									<IconButton onClick={() => modalHandler({type: 'open', effect: 'update', payload: { id, parent, title }})}>
+										<Edit/>
+									</IconButton>
+									<IconButton onClick={() => modalHandler({type: 'open', effect: 'delete', payload: { id, parent, title }})}>
+										<DeleteForever/>
+									</IconButton>
+								</TableCell>
 							</TableRow>
 						)})}
 					</TableBody>
