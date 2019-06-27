@@ -72,6 +72,18 @@ const API = {
           }
         })
       });
+    },
+    getAllCategories: () => {
+      return getJSON(ENDPOINT, {
+        ...queryOptions,
+        body: JSON.stringify({
+          jsonrpc: "2.0",
+          method: "readCategory",
+          params: {
+            conditions: ["parent", "IS NOT NULL"]
+          }
+        })
+      })
     }
   },
 

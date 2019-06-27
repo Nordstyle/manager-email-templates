@@ -1,4 +1,5 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
+import { connect } from "react-redux";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -7,6 +8,9 @@ import ButtonGroup from "@material-ui/core/ButtonGroup";
 import CategoriesFields from "./Fields/Categories";
 import MessagesFields from "./Fields/Messages";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import {categoryGetAll} from "../../store/actions/categories";
+import {getAllCategories} from '../../store/selectors';
+import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles(() => ({
   input: {
@@ -15,13 +19,41 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
+const FieldsComponent = ({ possibleCategories, type, isRowAction, payload, validateOptions, classes }) => {
+  switch (type) {
+    case "category":
+      return (
+        <CategoriesFields
+          isRowAction={isRowAction}
+          payload={payload}
+          validateOptions={validateOptions}
+          classes={classes}
+          possibleCategories={possibleCategories}
+        />
+      );
+    case "messages":
+      return (
+        <MessagesFields
+          isRowAction={isRowAction}
+          payload={payload}
+          validateOptions={validateOptions}
+          classes={classes}
+          possibleCategories={possibleCategories}
+        />
+      );
+    default:
+      throw new Error();
+  }
+};
+
+
 const formHandler = (
   e,
   modalHandler,
   modalOptions,
   addMethod,
   deleteMethod,
-  updateCategory
+  updateMethod
 ) => {
   e.preventDefault();
   const { effect, payload } = modalOptions;
@@ -35,37 +67,12 @@ const formHandler = (
   switch (effect) {
     case "add":
       addMethod({ title, parent, category, body });
+      modalHandler({ type: "close" });
       break;
     case "update":
-      updateCategory({ id, title, parent, category, body });
-      break;
-    default:
+      updateMethod({ id, title, parent, category, body });
       modalHandler({ type: "close" });
-  }
-
-  modalHandler({ type: "close" });
-};
-
-const FieldsComponent = ({ type, isRowAction, payload, validateOptions, classes }) => {
-  switch (type) {
-    case "category":
-      return (
-        <CategoriesFields
-          isRowAction={isRowAction}
-          payload={payload}
-          validateOptions={validateOptions}
-          classes={classes}
-        />
-      );
-    case "messages":
-      return (
-        <MessagesFields
-          isRowAction={isRowAction}
-          payload={payload}
-          validateOptions={validateOptions}
-          classes={classes}
-        />
-      );
+      break;
     default:
       throw new Error();
   }
@@ -79,15 +86,25 @@ const FormDialog = props => {
     addMethod,
     deleteMethod,
     updateMethod,
-    validateOptions
+    validateOptions,
+    categoryGetAll,
+    allCategories
   } = props;
   const classes = useStyles();
   const actionTitle = effect === "add" ? "Add" : "Update";
   const isRowAction = effect === "update";
+  const [possibleCategories, setPossibleCategories] = useState([]);
+  const [disabled, setDisabled] = useState(false);
+
+  useEffect(() => {
+    categoryGetAll();
+  }, [categoryGetAll]);
+
   return (
     <Dialog
       open={open}
       onClose={() => modalHandler({ type: "close" })}
+      onEnter={() => setPossibleCategories(allCategories)}
       aria-labelledby="form-dialog-title"
       transitionDuration={0}
     >
@@ -99,7 +116,10 @@ const FormDialog = props => {
             { effect, payload },
             addMethod,
             deleteMethod,
-            updateMethod
+            updateMethod,
+            disabled,
+            setDisabled,
+            isRowAction
           )
         }
       >
@@ -110,8 +130,12 @@ const FormDialog = props => {
           isRowAction={isRowAction}
           validateOptions={validateOptions}
           payload={payload}
+          setDisabled={setDisabled}
+          possibleCategories={possibleCategories}
+          disabled={disabled}
         />
         <DialogActions>
+          { disabled && <Typography variant="h6"> To update the field must be different </Typography>}
           <ButtonGroup variant="contained" color="primary">
             <Button
               variant="contained"
@@ -128,4 +152,9 @@ const FormDialog = props => {
   );
 };
 
-export default FormDialog;
+export default connect(
+  store => ({
+    allCategories: getAllCategories(store)
+  }),
+  { categoryGetAll }
+)(FormDialog);

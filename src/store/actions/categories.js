@@ -10,7 +10,10 @@ import {
 	CATEGORY_DELETE_SUCCESS,
 	CATEGORY_UPDATE_FAILED,
 	CATEGORY_UPDATE_INIT,
-	CATEGORY_UPDATE_SUCCESS
+	CATEGORY_UPDATE_SUCCESS,
+	CATEGORY_GET_ALL_FAILED,
+	CATEGORY_GET_ALL_INIT,
+	CATEGORY_GET_ALL_SUCCESS
 } from "../constants";
 
 import API from "../../api";
@@ -125,6 +128,34 @@ export const categoryUpdate = params => dispatch => {
 		},
 		error => {
 			dispatch(categoryUpdateFailed(error));
+		}
+	);
+};
+
+
+/* GET ALL CATEGORIES */
+const categoryGetAllInit = () => ({
+	type: CATEGORY_GET_ALL_INIT
+});
+
+const categoryGetAllSuccess = data => ({
+	type: CATEGORY_GET_ALL_SUCCESS,
+	payload: data
+});
+
+const categoryGetAllFailed = () => ({
+	type: CATEGORY_GET_ALL_FAILED
+});
+
+export const categoryGetAll = () => dispatch => {
+	dispatch(categoryGetAllInit());
+
+	return API.categories.getAllCategories().then(
+		(response) => {
+			dispatch(categoryGetAllSuccess(response.result));
+		},
+		error => {
+			dispatch(categoryGetAllFailed(error));
 		}
 	);
 };
