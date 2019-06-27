@@ -4,7 +4,7 @@ import {
   fetchCategoryAll,
   categoryCreate,
   categoryDelete,
-  categoryUpdate
+  categoryUpdate, categoryGetAll
 } from "../../store/actions/categories";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
@@ -12,7 +12,7 @@ import { Typography } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import TableList from "../../components/Table";
-import { getCategoriesSelector } from "../../store/selectors";
+import {getAllCategories, getCategoriesSelector} from "../../store/selectors";
 import Modal from "../../components/Modal";
 import {createNormalizeDataCategory} from "../../utils";
 
@@ -45,10 +45,12 @@ const Categories = props => {
   const {
     fetchCategoryAll,
     categories,
+    allCategories,
     isLoading,
     categoryCreate,
     categoryDelete,
-    categoryUpdate
+    categoryUpdate,
+    categoryGetAll
   } = props;
   const classes = useStyles();
   const [state] = useState({
@@ -70,10 +72,11 @@ const Categories = props => {
   useEffect(() => {
     document.title = "Categories page";
     fetchCategoryAll({ page, rowsPerPage });
+    categoryGetAll();
     return () => {
       document.title = "Email Templates Manager";
     };
-  }, [page, rowsPerPage, fetchCategoryAll]);
+  }, [page, rowsPerPage, fetchCategoryAll, categoryGetAll]);
 
   /* TODO: refactor datadatadata */
   const rows = categories.data.data ? categories.data.data.map(item => {
@@ -138,6 +141,7 @@ const Categories = props => {
       </Grid>
       <Modal
         type={state.type}
+        allCategories={allCategories}
         validateOptions={state.validateOptions}
         modalHandler={dispatchModalOptions}
         modalOptions={modalOptions}
@@ -151,7 +155,8 @@ const Categories = props => {
 export default connect(
   store => ({
     categories: getCategoriesSelector(store),
+    allCategories: getAllCategories(store),
     isLoading: store.categories.isLoading
   }),
-  { fetchCategoryAll, categoryCreate, categoryDelete, categoryUpdate }
+  { fetchCategoryAll, categoryCreate, categoryDelete, categoryUpdate, categoryGetAll }
 )(Categories);

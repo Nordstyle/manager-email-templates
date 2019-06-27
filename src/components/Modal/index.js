@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from "react";
-import { connect } from "react-redux";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -8,8 +7,6 @@ import ButtonGroup from "@material-ui/core/ButtonGroup";
 import CategoriesFields from "./Fields/Categories";
 import MessagesFields from "./Fields/Messages";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import {categoryGetAll} from "../../store/actions/categories";
-import {getAllCategories} from '../../store/selectors';
 import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles(() => ({
@@ -87,7 +84,6 @@ const FormDialog = props => {
     deleteMethod,
     updateMethod,
     validateOptions,
-    categoryGetAll,
     allCategories
   } = props;
   const classes = useStyles();
@@ -95,10 +91,6 @@ const FormDialog = props => {
   const isRowAction = effect === "update";
   const [possibleCategories, setPossibleCategories] = useState([]);
   const [disabled, setDisabled] = useState(false);
-
-  useEffect(() => {
-    categoryGetAll();
-  }, [categoryGetAll]);
 
   return (
     <Dialog
@@ -152,9 +144,4 @@ const FormDialog = props => {
   );
 };
 
-export default connect(
-  store => ({
-    allCategories: getAllCategories(store)
-  }),
-  { categoryGetAll }
-)(FormDialog);
+export default FormDialog;

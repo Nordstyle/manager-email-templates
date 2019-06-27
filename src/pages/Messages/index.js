@@ -12,9 +12,10 @@ import { Typography } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import TableList from "../../components/Table";
-import {getMessagesSelector} from "../../store/selectors";
+import {getAllCategories, getMessagesSelector} from "../../store/selectors";
 import Modal from "../../components/Modal";
 import {createNormalizeDataMessages} from "../../utils";
+import {categoryGetAll} from "../../store/actions/categories";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -48,7 +49,9 @@ const Categories = props => {
     isLoading,
     messagesCreate,
     messagesDelete,
-    messagesUpdate
+    messagesUpdate,
+    categoryGetAll,
+    allCategories
   } = props;
   const classes = useStyles();
   const [state] = useState({
@@ -70,10 +73,11 @@ const Categories = props => {
   useEffect(() => {
     document.title = "Messages page";
     fetchMessagesAll({ page, rowsPerPage });
+    categoryGetAll();
     return () => {
       document.title = "Email Templates Manager";
     };
-  }, [page, rowsPerPage, fetchMessagesAll]);
+  }, [page, rowsPerPage, fetchMessagesAll, categoryGetAll]);
 
   /* TODO: refactor datadatadata */
   const rows = messages.data.data ? messages.data.data.map(item => {
@@ -137,6 +141,7 @@ const Categories = props => {
         </Grid>
       </Grid>
       <Modal
+        allCategories={allCategories}
         type={state.type}
         validateOptions={state.validateOptions}
         modalHandler={dispatchModalOptions}
@@ -151,7 +156,8 @@ const Categories = props => {
 export default connect(
   store => ({
     messages: getMessagesSelector(store),
+    allCategories: getAllCategories(store),
     isLoading: store.messages.isLoading
   }),
-  { fetchMessagesAll, messagesCreate, messagesDelete, messagesUpdate }
+  { fetchMessagesAll, messagesCreate, messagesDelete, messagesUpdate, categoryGetAll }
 )(Categories);
