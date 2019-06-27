@@ -18,23 +18,10 @@ export const createNormalizeDataMessages = (id, title, body, category) => {
 };
 
 export const desc = (a, b, orderBy) => {
-	let firstArg, secondArg, orderArg;
-
-	if (orderBy === "parent" || orderBy === "children") {
-		firstArg = a.parent ? [a[orderBy]] : [0];
-		secondArg = b.parent ? [b[orderBy]] : [0];
-		orderArg = 0;
-	} else {
-		firstArg = a;
-		secondArg = b;
-		orderArg = orderBy;
-	}
-
-
-	if (secondArg[orderArg] < firstArg[orderArg]) {
+	if (b[orderBy] < a[orderBy]) {
 		return -1;
 	}
-	if (secondArg[orderArg] > firstArg[orderArg]) {
+	if (b[orderBy] > a[orderBy]) {
 		return 1;
 	}
 	return 0;
