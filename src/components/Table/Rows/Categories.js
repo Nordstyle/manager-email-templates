@@ -9,7 +9,7 @@ import TableRow from "@material-ui/core/TableRow";
 import DeleteForever from "@material-ui/icons/DeleteForever";
 
 
-const Category = props => {
+const Categories = props => {
   const { row, hasDeps, modalHandler, setOpenTooltip, openTooltip, deleteMethod } = props;
   return (
     <TableRow hover key={row.id}>
@@ -72,4 +72,4 @@ const Category = props => {
   );
 };
 
-export default Category;
+export default Categories;
