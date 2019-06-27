@@ -21,7 +21,7 @@ export const categories = (
     case CATEGORY_CREATE_SUCCESS:
       return {
         ...state,
-        data: { ...state.data, data: [...state.data.data, action.payload] }
+        data: { ...state.data, count: state.data.count++, data: [...state.data.data, action.payload] }
       };
     case CATEGORY_DELETE_SUCCESS:
       return {
