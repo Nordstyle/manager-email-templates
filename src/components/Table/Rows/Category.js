@@ -4,12 +4,12 @@ import IconButton from "@material-ui/core/IconButton";
 import Edit from "@material-ui/icons/Edit";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import Tooltip from "@material-ui/core/Tooltip";
-import TooltipAlert from "./TooltipAlert";
+import TooltipAlert from "../TooltipAlert";
 import TableRow from "@material-ui/core/TableRow";
 import DeleteForever from "@material-ui/icons/DeleteForever";
 
 
-const TableRowCategory = props => {
+const Category = props => {
   const { row, hasDeps, modalHandler, setOpenTooltip, openTooltip, deleteMethod } = props;
   return (
     <TableRow hover key={row.id}>
@@ -72,4 +72,4 @@ const TableRowCategory = props => {
   );
 };
 
-export default TableRowCategory;
+export default Category;

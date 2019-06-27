@@ -9,7 +9,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 
 import EnhancedTableHead from "./TableHead";
 import { getSorting, stableSort } from "../../utils";
-import TableRowCategory from "./TableRowCategory";
+import Category from "./Rows/Category";
 import CustomTableFooter from "./TableFooter";
 
 const useStyles = makeStyles(theme => ({
@@ -103,7 +103,7 @@ const TableList = props => {
 								stableSort(rows, getSorting(order, orderBy)).map(row => {
 									const hasDeps = !!row.children || !!row.messages;
 									return (
-										<TableRowCategory
+										<Category
 											key={row.id}
 											row={row}
 											hasDeps={hasDeps}
