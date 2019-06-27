@@ -25,7 +25,7 @@ const Messages = props => {
 						modalHandler({
 							type: "open",
 							effect: "update",
-							payload: { id: row.id, title: row.title, parent: row.parent }
+							payload: { id: row.id, title: row.title, category: row.category, body: row.body }
 						})
 					}
 				>

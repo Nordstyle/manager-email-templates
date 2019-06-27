@@ -5,12 +5,13 @@ import DialogActions from "@material-ui/core/DialogActions";
 import { makeStyles } from "@material-ui/core";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import CategoriesFields from "./Fields/Categories";
+import MessagesFields from "./Fields/Messages";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
 const useStyles = makeStyles(() => ({
   input: {
     minWidth: "400px",
-    marginBottom: "10px"
+    marginBottom: "16px"
   }
 }));
 
@@ -48,6 +49,15 @@ const FieldsComponent = ({ type, isRowAction, payload, validateOptions, classes 
     case "category":
       return (
         <CategoriesFields
+          isRowAction={isRowAction}
+          payload={payload}
+          validateOptions={validateOptions}
+          classes={classes}
+        />
+      );
+    case "messages":
+      return (
+        <MessagesFields
           isRowAction={isRowAction}
           payload={payload}
           validateOptions={validateOptions}
