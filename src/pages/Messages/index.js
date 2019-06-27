@@ -16,6 +16,7 @@ import {getAllCategories, getMessagesSelector} from "../../store/selectors";
 import Modal from "../../components/Modal";
 import {createNormalizeDataMessages} from "../../utils";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import {fetchCategoryAll} from "../../store/actions/categories";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -50,7 +51,8 @@ const Categories = props => {
     messagesCreate,
     messagesDelete,
     messagesUpdate,
-    allCategories
+    allCategories,
+    fetchCategoryAll
   } = props;
   const classes = useStyles();
   const [state] = useState({
@@ -71,16 +73,19 @@ const Categories = props => {
 
   useEffect(() => {
     document.title = "Messages page";
+    if (!allCategories.length) {
+      fetchCategoryAll();
+    }
     fetchMessagesAll();
     return () => {
       document.title = "Email Templates Manager";
     };
-  }, [fetchMessagesAll]);
+  }, [fetchMessagesAll, fetchCategoryAll, allCategories.length]);
 
   /* TODO: refactor datadatadata */
-  const rows = messages.data.data ? messages.data.data.map(item => {
+  const rows = (messages.data.data || []).map(item => {
     return createNormalizeDataMessages(item.id, item.title, item.body, item.category)
-  }) : [];
+  });
 
   const totalCount = messages.data ? messages.data.count : 0;
 
@@ -139,6 +144,7 @@ const Categories = props => {
         </Grid>
       </Grid>
       <Modal
+        key={(modalOptions.payload || {}).id}
         allCategories={allCategories}
         type={state.type}
         validateOptions={state.validateOptions}
@@ -157,5 +163,5 @@ export default connect(
     allCategories: getAllCategories(store),
     isLoading: store.messages.isLoading
   }),
-  { fetchMessagesAll, messagesCreate, messagesDelete, messagesUpdate }
+  { fetchMessagesAll, fetchCategoryAll, messagesCreate, messagesDelete, messagesUpdate }
 )(Categories);

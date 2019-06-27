@@ -49,8 +49,10 @@ const formHandler = (
   modalHandler,
   modalOptions,
   addMethod,
-  deleteMethod,
-  updateMethod
+  updateMethod,
+  disabled,
+  setDisabled,
+  isRowAction
 ) => {
   e.preventDefault();
   const { effect, payload } = modalOptions;
@@ -60,6 +62,14 @@ const formHandler = (
   const parent = form.parent ? form.parent.value : null;
   const category = form.category ? form.category.value : null;
   const body = form.body ? form.body.value : null;
+
+
+  /* VALIDATE FORM */
+  if (isRowAction) {
+    const newData = Object.entries({ title, parent, category, body }).filter(([k, v]) => payload[k] != v);
+    if (!newData.length) return setDisabled(true);
+  }
+
 
   switch (effect) {
     case "add":
@@ -81,7 +91,6 @@ const FormDialog = props => {
     modalOptions: { open, effect, payload },
     modalHandler,
     addMethod,
-    deleteMethod,
     updateMethod,
     validateOptions,
     allCategories
@@ -101,13 +110,11 @@ const FormDialog = props => {
       transitionDuration={0}
     >
       <form
-        onSubmit={e =>
-          formHandler(
+        onSubmit={e => formHandler(
             e,
             modalHandler,
             { effect, payload },
             addMethod,
-            deleteMethod,
             updateMethod,
             disabled,
             setDisabled,
@@ -127,7 +134,7 @@ const FormDialog = props => {
           disabled={disabled}
         />
         <DialogActions>
-          { disabled && <Typography variant="h6"> To update the field must be different </Typography>}
+          { disabled && <Typography style={{color: "red"}} variant="h6"> To update the field must be different </Typography>}
           <ButtonGroup variant="contained" color="primary">
             <Button
               variant="contained"

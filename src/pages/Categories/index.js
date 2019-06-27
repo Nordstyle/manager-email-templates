@@ -78,9 +78,9 @@ const Categories = props => {
   }, [fetchCategoryAll]);
 
   /* TODO: refactor datadatadata */
-  const rows = categories.data.data ? categories.data.data.map(item => {
+  const rows = (categories.data.data || []).map(item => {
     return createNormalizeDataCategory(item.id, item.title, item.parent, item.messages, item.children)
-  }) : [];
+  });
 
   const totalCount = categories.data ? categories.data.count : 0;
 
@@ -139,6 +139,7 @@ const Categories = props => {
         </Grid>
       </Grid>
       <Modal
+        key={(modalOptions.payload || {}).id}
         type={state.type}
         allCategories={allCategories}
         validateOptions={state.validateOptions}

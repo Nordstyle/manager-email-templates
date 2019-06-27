@@ -5,7 +5,6 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import CircularProgress from "@material-ui/core/CircularProgress";
 
 import EnhancedTableHead from "./TableHead";
 import { getSorting, stableSort } from "../../utils";
