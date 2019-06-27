@@ -9,10 +9,11 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 
 import EnhancedTableHead from "./TableHead";
 import { getSorting, stableSort } from "../../utils";
-import Category from "./Rows/Category";
+import Categories from "./Rows/Categories";
+import Messages from "./Rows/Messages";
 import CustomTableFooter from "./TableFooter";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
 	root: {
 		width: "100%"
 	},
@@ -47,13 +48,24 @@ const RowsComponent = ({
 	switch (type) {
 		case "category":
 			return (
-				<Category
+				<Categories
 					row={row}
 					hasDeps={hasDeps}
 					modalHandler={modalHandler}
 					setOpenTooltip={setOpenTooltip}
 					openTooltip={openTooltip}
 					deleteMethod={deleteMethod}
+				/>
+			);
+		case 'messages':
+			return (
+				<Messages
+					row={row}
+          hasDeps={hasDeps}
+          modalHandler={modalHandler}
+          setOpenTooltip={setOpenTooltip}
+          openTooltip={openTooltip}
+          deleteMethod={deleteMethod}
 				/>
 			);
 		default:
