@@ -46,9 +46,9 @@ const Categories = props => {
     fetchMessagesAll,
     messages,
     isLoading,
-    categoryCreate,
-    categoryDelete,
-    categoryUpdate
+    messagesCreate,
+    messagesDelete,
+    messagesUpdate
   } = props;
   const classes = useStyles();
   const [state] = useState({
@@ -84,15 +84,15 @@ const Categories = props => {
 
   /* METHODS */
   const addCategory = params => {
-    categoryCreate(params);
+    messagesCreate(params);
   };
 
   const deleteCategory = params => {
-    categoryDelete(params);
+    messagesDelete(params);
   };
 
   const updateCategory = params => {
-    categoryUpdate(params);
+    messagesUpdate(params);
   };
 
   const handleRequestSort = (event, property) => {

@@ -28,14 +28,16 @@ const formHandler = (
   const id = payload ? payload.id : undefined;
   const form = e.target;
   const title = form.title.value;
-  const parent = form.parent.value;
+  const parent = form.parent ? form.parent.value : null;
+  const category = form.category ? form.category.value : null;
+  const body = form.body ? form.body.value : null;
 
   switch (effect) {
     case "add":
-      addMethod({ title, parent });
+      addMethod({ title, parent, category, body });
       break;
     case "update":
-      updateCategory({ id, title, parent });
+      updateCategory({ id, title, parent, category, body });
       break;
     default:
       modalHandler({ type: "close" });

@@ -47,12 +47,13 @@ const messagesCreateInit = () => ({
   type: MESSAGES_CREATE_INIT
 });
 
-const messagesCreateSuccess = (data, title, category) => ({
+const messagesCreateSuccess = (data, title, category, body) => ({
   type: MESSAGES_CREATE_SUCCESS,
   payload: {
     id: data["Primary key"]["id"],
     title,
-    category: category ? { id: category } : null
+    category: category ? { id: category } : null,
+    body: body ? body : ''
   }
 });
 
@@ -65,9 +66,8 @@ export const messagesCreate = params => dispatch => {
 
   return API.messages.create(params).then(
     response => {
-      console.log(response, 'resp')
-      const { title, category } = params;
-      dispatch(messagesCreateSuccess(response.result, title, category));
+      const { title, category, body } = params;
+      dispatch(messagesCreateSuccess(response.result, title, category, body));
     },
     error => {
       dispatch(messagesCreateFailed(error));

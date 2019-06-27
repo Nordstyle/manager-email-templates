@@ -91,7 +91,7 @@ const API = {
         })
       });
     },
-    create: ({ title, parent, body }) => {
+    create: ({ title, category, body }) => {
       return getJSON(ENDPOINT, {
         ...queryOptions,
         body: JSON.stringify({
@@ -100,7 +100,7 @@ const API = {
           params: {
             data: {
               title,
-              category: parent ? { id: Number(parent) } : null,
+              category: category ? { id: Number(category) } : null,
               body: body ? body : ''
             }
           }
