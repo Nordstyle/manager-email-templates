@@ -1,12 +1,11 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
 import { makeStyles } from "@material-ui/core";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
+import CategoriesFields from "./Fields/Categories";
+import DialogTitle from "@material-ui/core/DialogTitle";
 
 const useStyles = makeStyles(() => ({
   input: {
@@ -44,14 +43,31 @@ const formHandler = (
   modalHandler({ type: "close" });
 };
 
+const FieldsComponent = ({ type, isRowAction, payload, validateOptions, classes }) => {
+  switch (type) {
+    case "category":
+      return (
+        <CategoriesFields
+          isRowAction={isRowAction}
+          payload={payload}
+          validateOptions={validateOptions}
+          classes={classes}
+        />
+      );
+    default:
+      throw new Error();
+  }
+};
+
 const FormDialog = props => {
   const {
+    type,
     modalOptions: { open, effect, payload },
     modalHandler,
     addMethod,
     deleteMethod,
     updateMethod,
-    validateOptions: {titleLength}
+    validateOptions
   } = props;
   const classes = useStyles();
   const actionTitle = effect === "add" ? "Add" : "Update";
@@ -76,28 +92,13 @@ const FormDialog = props => {
         }
       >
         <DialogTitle id="form-dialog-title">{actionTitle}</DialogTitle>
-        <DialogContent>
-          <TextField
-            margin="dense"
-            id="title"
-            label='Title'
-            defaultValue={isRowAction ? payload.title : ""}
-            type="text"
-            required
-            inputProps={{ maxLength: titleLength }}
-            className={classes.input}
-            fullWidth
-          />
-          <TextField
-            margin="dense"
-            id="parent"
-            label="Parent id"
-            defaultValue={isRowAction ? payload.parent : ""}
-            type="number"
-            className={classes.input}
-            fullWidth
-          />
-        </DialogContent>
+        <FieldsComponent
+          type={type}
+          classes={classes}
+          isRowAction={isRowAction}
+          validateOptions={validateOptions}
+          payload={payload}
+        />
         <DialogActions>
           <ButtonGroup variant="contained" color="primary">
             <Button
@@ -107,11 +108,7 @@ const FormDialog = props => {
             >
               Cancel
             </Button>
-            <Button
-              type="submit"
-            >
-              {actionTitle}
-            </Button>
+            <Button type="submit">{actionTitle}</Button>
           </ButtonGroup>
         </DialogActions>
       </form>
