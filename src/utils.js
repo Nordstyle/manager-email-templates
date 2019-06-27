@@ -8,6 +8,15 @@ export const createNormalizeDataCategory = (id, title, parent = null, messages, 
 	}
 };
 
+export const createNormalizeDataMessages = (id, title, body, category) => {
+	return {
+		id,
+		title,
+		body: body ? body : null,
+		category: category ? category.id : null
+	}
+};
+
 export const desc = (a, b, orderBy) => {
 	let firstArg, secondArg, orderArg;
 
