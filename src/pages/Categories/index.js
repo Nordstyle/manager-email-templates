@@ -51,6 +51,12 @@ const Categories = props => {
     categoryUpdate
   } = props;
   const classes = useStyles();
+  const [state, setState] = useState({
+    type: 'category',
+    validateOptions: {
+      titleLength: 255
+    }
+  });
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [order, setOrder] = useState("asc");
@@ -113,6 +119,7 @@ const Categories = props => {
         <Grid item xs={10}>
           <Typography variant={"h6"}>List of Categories</Typography>
           <TableList
+            type={state.type}
             rowHeads={rowHeads}
             rows={rows}
             page={page}
@@ -130,6 +137,7 @@ const Categories = props => {
         </Grid>
       </Grid>
       <Modal
+        validateOptions={state.validateOptions}
         modalHandler={dispatchModalOptions}
         modalOptions={modalOptions}
         addMethod={addCategory}

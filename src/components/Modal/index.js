@@ -50,7 +50,8 @@ const FormDialog = props => {
     modalHandler,
     addMethod,
     deleteMethod,
-    updateMethod
+    updateMethod,
+    validateOptions: {titleLength}
   } = props;
   const classes = useStyles();
   const actionTitle = effect === "add" ? "Add" : "Update";
@@ -83,7 +84,7 @@ const FormDialog = props => {
             defaultValue={isRowAction ? payload.title : ""}
             type="text"
             required
-            inputProps={{ maxLength: 255 }}
+            inputProps={{ maxLength: titleLength }}
             className={classes.input}
             fullWidth
           />

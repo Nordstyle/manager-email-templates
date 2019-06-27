@@ -31,9 +31,35 @@ const useStyles = makeStyles(theme => ({
 		padding: "20px"
 	},
 	tableWrapper: {
-		overflowX: 'auto'
+		overflowX: "auto"
 	}
 }));
+
+const RowsComponent = ({
+   type,
+   row,
+   hasDeps,
+   modalHandler,
+   setOpenTooltip,
+   openTooltip,
+   deleteMethod
+ }) => {
+	switch (type) {
+		case "category":
+			return (
+				<Category
+					row={row}
+					hasDeps={hasDeps}
+					modalHandler={modalHandler}
+					setOpenTooltip={setOpenTooltip}
+					openTooltip={openTooltip}
+					deleteMethod={deleteMethod}
+				/>
+			);
+		default:
+			throw new Error();
+	}
+};
 
 const tooltipReducer = (state, action) => {
 	switch (action.type) {
@@ -48,6 +74,7 @@ const tooltipReducer = (state, action) => {
 
 const TableList = props => {
 	const {
+		type,
 		rowHeads,
 		rows,
 		totalCount,
@@ -99,12 +126,14 @@ const TableList = props => {
 									</TableCell>
 								</TableRow>
 							) : (
-								rows && rows.length > 0 &&
+								rows &&
+								rows.length > 0 &&
 								stableSort(rows, getSorting(order, orderBy)).map(row => {
 									const hasDeps = !!row.children || !!row.messages;
 									return (
-										<Category
+										<RowsComponent
 											key={row.id}
+											type={type}
 											row={row}
 											hasDeps={hasDeps}
 											modalHandler={modalHandler}
@@ -112,7 +141,7 @@ const TableList = props => {
 											openTooltip={openTooltip}
 											deleteMethod={deleteMethod}
 										/>
-									)
+									);
 								})
 							)}
 						</TableBody>
@@ -122,7 +151,8 @@ const TableList = props => {
 								rowsPerPage={rowsPerPage}
 								page={page}
 								handleChangePage={handleChangePage}
-								handleChangeRowsPerPage={handleChangeRowsPerPage}/>
+								handleChangeRowsPerPage={handleChangeRowsPerPage}
+							/>
 						)}
 					</Table>
 				</div>
