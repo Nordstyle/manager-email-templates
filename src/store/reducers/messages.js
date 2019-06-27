@@ -29,11 +29,11 @@ export const messages = (
         data: { ...state.data, data: state.data.data.filter(item => item.id !== action.payload) }
       };
     case MESSAGES_UPDATE_SUCCESS:
-      const { id, title, category } = action.payload;
+      const { id, title, category, body } = action.payload;
       return {
         ...state,
         data: { ...state.data, data: state.data.data.map(item => {
-            if (item.id === id) return { id, title, category: category ? { id: category } : null };
+            if (item.id === id) return { id, title, body: body, category: category ? { id: category } : null };
             return item;
           })}
       };

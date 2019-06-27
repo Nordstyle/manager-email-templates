@@ -107,9 +107,9 @@ const messagesUpdateInit = () => ({
   type: MESSAGES_UPDATE_INIT
 });
 
-const messagesUpdateSuccess = id => ({
+const messagesUpdateSuccess = (id, title, category, body) => ({
   type: MESSAGES_UPDATE_SUCCESS,
-  payload: id
+  payload: {id, title, category, body}
 });
 
 const messagesUpdateFailed = () => ({
@@ -121,8 +121,8 @@ export const messagesUpdate = params => dispatch => {
 
   return API.messages.update(params).then(
     () => {
-      const { id, title, category } = params;
-      dispatch(messagesUpdateSuccess({ id, title, category }));
+      const { id, title, category, body } = params;
+      dispatch(messagesUpdateSuccess(id, title, category, body));
     },
     error => {
       dispatch(messagesUpdateFailed(error));

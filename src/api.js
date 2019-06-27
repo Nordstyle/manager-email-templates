@@ -55,7 +55,7 @@ const API = {
             conditions: conditions ? conditions : ["id", "=", id],
             data: {
               title,
-              parent: parent ? { id: Number(parent) } : null
+              parent: parent ? { id: Number(parent) } : { id: null }
             }
           }
         })
@@ -100,14 +100,14 @@ const API = {
           params: {
             data: {
               title,
-              category: category ? { id: Number(category) } : null,
-              body: body ? body : ''
+              body: body ? body : '',
+              category: category ? { id: Number(category) } : { id: null }
             }
           }
         })
       });
     },
-    update: ({ id, title, parent, conditions }) => {
+    update: ({ id, title, category, body, conditions }) => {
       return getJSON(ENDPOINT, {
         ...queryOptions,
         body: JSON.stringify({
@@ -117,7 +117,8 @@ const API = {
             conditions: conditions ? conditions : ["id", "=", id],
             data: {
               title,
-              category: parent ? { id: Number(parent) } : null
+              body: body ? body : '',
+              category: category ? { id: Number(category) } : { id: null }
             }
           }
         })
