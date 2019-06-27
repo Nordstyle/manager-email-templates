@@ -17,10 +17,15 @@ import Modal from "../../components/Modal";
 import {createNormalizeDataMessages} from "../../utils";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import {fetchCategoryAll} from "../../store/actions/categories";
+import TextField from "@material-ui/core/TextField";
+import { useFilter } from "../../hooks";
 
 const useStyles = makeStyles(() => ({
   root: {
     flexGrow: 1
+  },
+  buttonGroup: {
+    marginBottom: '20px'
   }
 }));
 
@@ -71,6 +76,7 @@ const Categories = props => {
     payload: undefined
   });
 
+
   useEffect(() => {
     document.title = "Messages page";
     if (!allCategories.length) {
@@ -86,6 +92,8 @@ const Categories = props => {
   const rows = (messages.data.data || []).map(item => {
     return createNormalizeDataMessages(item.id, item.title, item.body, item.category)
   });
+
+  const [filteredRows, filter, setFilter] = useFilter(rows, ['title', 'category']);
 
   const totalCount = messages.data ? messages.data.count : 0;
 
@@ -113,22 +121,32 @@ const Categories = props => {
       <Grid container spacing={3}>
         <Grid item xs={2}>
           <Typography variant={"h6"}>Actions</Typography>
-          <ButtonGroup fullWidth size={"small"} color={"primary"}>
+          <ButtonGroup className={classes.buttonGroup} fullWidth size={"small"} color={"primary"}>
             <Button
-              onClick={() =>
-                dispatchModalOptions({ type: "open", effect: "add" })
-              }
-            >
+              onClick={() => dispatchModalOptions({ type: "open", effect: "add" })}>
               Add item
             </Button>
           </ButtonGroup>
+          <TextField
+            id="standard-full-width"
+            label="Filtered"
+            style={{ margin: 8 }}
+            placeholder="Enter filter text..."
+            value={filter}
+            fullWidth
+            margin="normal"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            onChange={e => setFilter(e.target.value)}
+          />
         </Grid>
         <Grid item xs={10}>
           <Typography variant={"h6"}>List of Messages {isLoading && <CircularProgress size={20}/>}</Typography>
           <TableList
             type={state.type}
             rowHeads={rowHeads}
-            rows={rows}
+            rows={filteredRows}
             page={page}
             setPage={setPage}
             totalCount={totalCount}
