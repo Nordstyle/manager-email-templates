@@ -51,7 +51,7 @@ const Categories = props => {
     categoryUpdate
   } = props;
   const classes = useStyles();
-  const [state, setState] = useState({
+  const [state] = useState({
     type: 'category',
     validateOptions: {
       titleLength: 255

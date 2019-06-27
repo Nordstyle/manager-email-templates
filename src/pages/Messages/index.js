@@ -12,8 +12,9 @@ import { Typography } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import TableList from "../../components/Table";
-import { getMessagesSelector } from "../../store/selectors";
+import {getMessagesSelector} from "../../store/selectors";
 import Modal from "../../components/Modal";
+import {createNormalizeDataMessages} from "../../utils";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -32,16 +33,30 @@ const modalReducer = (state, action) => {
   }
 };
 
-const Messages = props => {
+const rowHeads = [
+  {id: 'id', numeric: false, disablePadding: false, label: 'id'},
+  {id: 'title', numeric: false, disablePadding: false, label: 'Title'},
+  {id: 'body', numeric: false, disablePadding: false, label: 'Body'},
+  {id: 'category', numeric: true, disablePadding: false, label: 'Category ID'}
+];
+
+
+const Categories = props => {
   const {
     fetchMessagesAll,
     messages,
     isLoading,
-    messagesCreate,
-    messagesDelete,
-    messagesUpdate
+    categoryCreate,
+    categoryDelete,
+    categoryUpdate
   } = props;
   const classes = useStyles();
+  const [state] = useState({
+    type: 'messages',
+    validateOptions: {
+      titleLength: 1024
+    }
+  });
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [order, setOrder] = useState("asc");
@@ -60,18 +75,24 @@ const Messages = props => {
     };
   }, [page, rowsPerPage, fetchMessagesAll]);
 
+  /* TODO: refactor datadatadata */
+  const rows = messages.data.data ? messages.data.data.map(item => {
+    return createNormalizeDataMessages(item.id, item.title, item.body, item.category)
+  }) : [];
+
+  const totalCount = messages.data ? messages.data.count : 0;
+
   /* METHODS */
-  const addMessages = params => {
-    console.log(params, 'PARAMS')
-    messagesCreate(params);
+  const addCategory = params => {
+    categoryCreate(params);
   };
 
-  const deleteMessages = params => {
-    messagesDelete(params);
+  const deleteCategory = params => {
+    categoryDelete(params);
   };
 
-  const updateMessages = params => {
-    messagesUpdate(params);
+  const updateCategory = params => {
+    categoryUpdate(params);
   };
 
   const handleRequestSort = (event, property) => {
@@ -98,14 +119,17 @@ const Messages = props => {
         <Grid item xs={10}>
           <Typography variant={"h6"}>List of Messages</Typography>
           <TableList
+            type={state.type}
+            rowHeads={rowHeads}
+            rows={rows}
             page={page}
             setPage={setPage}
-            data={messages}
+            totalCount={totalCount}
             rowsPerPage={rowsPerPage}
             setRowsPerPage={setRowsPerPage}
             isLoading={isLoading}
             modalHandler={dispatchModalOptions}
-            deleteMethod={deleteMessages}
+            deleteMethod={deleteCategory}
             order={order}
             orderBy={orderBy}
             handleRequestSort={handleRequestSort}
@@ -113,10 +137,11 @@ const Messages = props => {
         </Grid>
       </Grid>
       <Modal
+        validateOptions={state.validateOptions}
         modalHandler={dispatchModalOptions}
         modalOptions={modalOptions}
-        addMethod={addMessages}
-        updateMethod={updateMessages}
+        addMethod={addCategory}
+        updateMethod={updateCategory}
       />
     </div>
   );
@@ -128,4 +153,4 @@ export default connect(
     isLoading: store.messages.isLoading
   }),
   { fetchMessagesAll, messagesCreate, messagesDelete, messagesUpdate }
-)(Messages);
+)(Categories);
