@@ -137,6 +137,7 @@ const Categories = props => {
         </Grid>
       </Grid>
       <Modal
+        type={state.type}
         validateOptions={state.validateOptions}
         modalHandler={dispatchModalOptions}
         modalOptions={modalOptions}
