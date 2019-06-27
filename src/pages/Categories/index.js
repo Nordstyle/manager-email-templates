@@ -4,7 +4,7 @@ import {
   fetchCategoryAll,
   categoryCreate,
   categoryDelete,
-  categoryUpdate, categoryGetAll
+  categoryUpdate
 } from "../../store/actions/categories";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
@@ -49,8 +49,7 @@ const Categories = props => {
     isLoading,
     categoryCreate,
     categoryDelete,
-    categoryUpdate,
-    categoryGetAll
+    categoryUpdate
   } = props;
   const classes = useStyles();
   const [state] = useState({
@@ -71,12 +70,11 @@ const Categories = props => {
 
   useEffect(() => {
     document.title = "Categories page";
-    fetchCategoryAll({ page, rowsPerPage });
-    categoryGetAll();
+    fetchCategoryAll();
     return () => {
       document.title = "Email Templates Manager";
     };
-  }, [page, rowsPerPage, fetchCategoryAll, categoryGetAll]);
+  }, [fetchCategoryAll]);
 
   /* TODO: refactor datadatadata */
   const rows = categories.data.data ? categories.data.data.map(item => {
@@ -158,5 +156,5 @@ export default connect(
     allCategories: getAllCategories(store),
     isLoading: store.categories.isLoading
   }),
-  { fetchCategoryAll, categoryCreate, categoryDelete, categoryUpdate, categoryGetAll }
+  { fetchCategoryAll, categoryCreate, categoryDelete, categoryUpdate }
 )(Categories);

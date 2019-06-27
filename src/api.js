@@ -15,22 +15,20 @@ const queryOptions = {
 
 const API = {
   categories: {
-    read: ({ page, rowsPerPage, conditions }) => {
+    read: () => {
       return getJSON(ENDPOINT, {
         ...queryOptions,
         body: JSON.stringify({
           jsonrpc: "2.0",
           method: "readCategory",
           params: {
-            conditions: conditions ? conditions : ["id", "IS NOT NULL"],
-            perPage: rowsPerPage ? rowsPerPage : 10,
-            page: page ? page + 1 : 1,
+            conditions: ["id", "IS NOT NULL"],
             fields: ["id", "title", "parent", "messages", "children"]
           }
         })
       });
     },
-    create: ({ title, parent }) => {
+    create: ({title, parent}) => {
       return getJSON(ENDPOINT, {
         ...queryOptions,
         body: JSON.stringify({
@@ -39,13 +37,13 @@ const API = {
           params: {
             data: {
               title,
-              parent: parent ? { id: parent } : null
+              parent: parent ? {id: parent} : null
             }
           }
         })
       });
     },
-    update: ({ id, title, parent, conditions }) => {
+    update: ({id, title, parent, conditions}) => {
       return getJSON(ENDPOINT, {
         ...queryOptions,
         body: JSON.stringify({
@@ -55,13 +53,13 @@ const API = {
             conditions: conditions ? conditions : ["id", "=", id],
             data: {
               title,
-              parent: parent ? { id: Number(parent) } : null
+              parent: parent ? {id: Number(parent)} : null
             }
           }
         })
       });
     },
-    delete: ({ id, conditions }) => {
+    delete: ({id, conditions}) => {
       return getJSON(ENDPOINT, {
         ...queryOptions,
         body: JSON.stringify({
@@ -72,32 +70,18 @@ const API = {
           }
         })
       });
-    },
-    getAllCategories: () => {
-      return getJSON(ENDPOINT, {
-        ...queryOptions,
-        body: JSON.stringify({
-          jsonrpc: "2.0",
-          method: "readCategory",
-          params: {
-            conditions: ["parent", "IS NOT NULL"]
-          }
-        })
-      })
     }
   },
 
   messages: {
-    read: ({ page, rowsPerPage, conditions }) => {
+    read: () => {
       return getJSON(ENDPOINT, {
         ...queryOptions,
         body: JSON.stringify({
           jsonrpc: "2.0",
           method: "readMessage",
           params: {
-            conditions: conditions ? conditions : ["id", "IS NOT NULL"],
-            perPage: rowsPerPage ? rowsPerPage : 10,
-            page: page ? page + 1 : 1,
+            conditions: ["id", "IS NOT NULL"],
             fields: ["id", "title", "body", "category"]
           }
         })

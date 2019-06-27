@@ -15,7 +15,6 @@ import TableList from "../../components/Table";
 import {getAllCategories, getMessagesSelector} from "../../store/selectors";
 import Modal from "../../components/Modal";
 import {createNormalizeDataMessages} from "../../utils";
-import {categoryGetAll} from "../../store/actions/categories";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -50,7 +49,6 @@ const Categories = props => {
     messagesCreate,
     messagesDelete,
     messagesUpdate,
-    categoryGetAll,
     allCategories
   } = props;
   const classes = useStyles();
@@ -72,12 +70,11 @@ const Categories = props => {
 
   useEffect(() => {
     document.title = "Messages page";
-    fetchMessagesAll({ page, rowsPerPage });
-    categoryGetAll();
+    fetchMessagesAll();
     return () => {
       document.title = "Email Templates Manager";
     };
-  }, [page, rowsPerPage, fetchMessagesAll, categoryGetAll]);
+  }, [fetchMessagesAll]);
 
   /* TODO: refactor datadatadata */
   const rows = messages.data.data ? messages.data.data.map(item => {
@@ -159,5 +156,5 @@ export default connect(
     allCategories: getAllCategories(store),
     isLoading: store.messages.isLoading
   }),
-  { fetchMessagesAll, messagesCreate, messagesDelete, messagesUpdate, categoryGetAll }
+  { fetchMessagesAll, messagesCreate, messagesDelete, messagesUpdate }
 )(Categories);

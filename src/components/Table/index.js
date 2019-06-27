@@ -140,7 +140,9 @@ const TableList = props => {
 							) : (
 								rows &&
 								rows.length > 0 &&
-								stableSort(rows, getSorting(order, orderBy)).map(row => {
+								stableSort(rows, getSorting(order, orderBy))
+									.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+									.map(row => {
 									const hasDeps = !!row.children || !!row.messages;
 									return (
 										<RowsComponent

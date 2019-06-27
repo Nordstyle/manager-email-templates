@@ -8,11 +8,9 @@ import FormControl from "@material-ui/core/FormControl";
 
 const MessagesFields = (props) => {
 	const { possibleCategories, isRowAction, payload, validateOptions: {titleLength}, classes } = props;
-	console.log(payload)
 	const [values, setValues] = useState({
 		category: isRowAction && payload.category ? payload.category : ''
 	});
-	console.log(values,'values')
 	const handleChange = (event) => {
 		setValues(oldValues => ({
 			...oldValues,
