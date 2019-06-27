@@ -39,7 +39,7 @@ const API = {
           params: {
             data: {
               title,
-              parent: parent ? { id: Number(parent) } : null
+              parent: parent ? { id: parent } : null
             }
           }
         })
@@ -55,7 +55,7 @@ const API = {
             conditions: conditions ? conditions : ["id", "=", id],
             data: {
               title,
-              parent: parent ? { id: Number(parent) } : { id: null }
+              parent: parent ? { id: Number(parent) } : null
             }
           }
         })

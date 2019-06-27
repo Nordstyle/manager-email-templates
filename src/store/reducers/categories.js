@@ -26,7 +26,7 @@ export const categories = (
     case CATEGORY_DELETE_SUCCESS:
       return {
         ...state,
-        data: { ...state.data, data: state.data.data.filter(item => item.id !== action.payload) }
+        data: { ...state.data, count: state.data.count--, data: state.data.data.filter(item => item.id !== action.payload) }
       };
     case CATEGORY_UPDATE_SUCCESS:
       const { id, title, parent } = action.payload;
