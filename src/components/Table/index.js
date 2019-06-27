@@ -105,7 +105,7 @@ const TableList = props => {
 		openId: undefined
 	});
 	const classes = useStyles();
-
+	const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 	/* METHODS */
 	const handleChangePage = (event, newPage) => {
 		setPage(newPage);
@@ -114,6 +114,7 @@ const TableList = props => {
 	const handleChangeRowsPerPage = event => {
 		setRowsPerPage(parseInt(event.target.value, 10));
 	};
+
 
 	return (
 		<div className={classes.root}>
@@ -127,22 +128,11 @@ const TableList = props => {
 							onRequestSort={handleRequestSort}
 						/>
 						<TableBody>
-							{isLoading ? (
-								<TableRow>
-									<TableCell
-										className={classes.loader}
-										component="th"
-										scope="row"
-									>
-										<CircularProgress />
-									</TableCell>
-								</TableRow>
-							) : (
-								rows &&
-								rows.length > 0 &&
-								stableSort(rows, getSorting(order, orderBy))
-									.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-									.map(row => {
+							{rows &&
+							rows.length > 0 &&
+							stableSort(rows, getSorting(order, orderBy))
+								.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+								.map(row => {
 									const hasDeps = !!row.children || !!row.messages;
 									return (
 										<RowsComponent
@@ -156,7 +146,11 @@ const TableList = props => {
 											deleteMethod={deleteMethod}
 										/>
 									);
-								})
+								})}
+							{emptyRows > 0 && (
+								<TableRow style={{ height: 49 * emptyRows }}>
+									<TableCell colSpan={6} />
+								</TableRow>
 							)}
 						</TableBody>
 						{!isLoading && rows && rows.length > 0 && (

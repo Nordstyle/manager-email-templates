@@ -15,6 +15,7 @@ import TableList from "../../components/Table";
 import {getAllCategories, getMessagesSelector} from "../../store/selectors";
 import Modal from "../../components/Modal";
 import {createNormalizeDataMessages} from "../../utils";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -118,7 +119,7 @@ const Categories = props => {
           </ButtonGroup>
         </Grid>
         <Grid item xs={10}>
-          <Typography variant={"h6"}>List of Messages</Typography>
+          <Typography variant={"h6"}>List of Messages {isLoading && <CircularProgress size={20}/>}</Typography>
           <TableList
             type={state.type}
             rowHeads={rowHeads}
